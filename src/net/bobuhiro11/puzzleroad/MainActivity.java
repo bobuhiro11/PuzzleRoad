@@ -23,7 +23,8 @@ public class MainActivity extends Activity {
 		i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 		setVolumeControlStream(AudioManager.STREAM_MUSIC); 
 		//View‚ðƒZƒbƒg
-		setContentView(R.layout.activity_main);
+		//setContentView(R.layout.activity_main);
+		setContentView(new MainView(this));
 	}
 
 	@Override
