@@ -1,4 +1,4 @@
-package net.bobuhiro11.puzzleroad; 
+ï»¿package net.bobuhiro11.puzzleroad; 
 
 
 import android.content.Context;
@@ -27,15 +27,15 @@ SurfaceHolder.Callback, Runnable {
 		
 		this.context = context;
 		
-		//ƒŠƒ\[ƒX‚Ì€”õ
+		//ãƒªã‚½ãƒ¼ã‚¹ã®æº–å‚™
 		paint = new Paint();
 		paint.setColor(Color.WHITE);
 
 
 
-		// getHolder()ƒƒ\ƒbƒh‚ÅSurfaceHolder‚ğæ“¾B‚³‚ç‚ÉƒR[ƒ‹ƒoƒbƒN‚ğ“o˜^
+		// getHolder()ãƒ¡ã‚½ãƒƒãƒ‰ã§SurfaceHolderã‚’å–å¾—ã€‚ã•ã‚‰ã«ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã‚’ç™»éŒ²
 		getHolder().addCallback(this);
-		// ƒ^ƒCƒ}[ˆ—‚ğŠJn
+		// ã‚¿ã‚¤ãƒãƒ¼å‡¦ç†ã‚’é–‹å§‹
 		runnable = new Runnable() {
 			public void run() {
 				TimerEvent();
@@ -45,37 +45,37 @@ SurfaceHolder.Callback, Runnable {
 		handler.postDelayed(runnable, interval);
 	}
 
-	//ƒ^ƒCƒ}[ƒCƒxƒ“ƒg(interval‚²‚Æ‚ÉŒÄ‚Î‚ê‚éD)
+	//ã‚¿ã‚¤ãƒãƒ¼ã‚¤ãƒ™ãƒ³ãƒˆ(intervalã”ã¨ã«å‘¼ã°ã‚Œã‚‹ï¼)
 	private void TimerEvent() {
 
 	}
 
-	// SurfaceView¶¬‚ÉŒÄ‚Ño‚³‚ê‚é
+	// SurfaceViewç”Ÿæˆæ™‚ã«å‘¼ã³å‡ºã•ã‚Œã‚‹
 	public void surfaceCreated(SurfaceHolder holder) {
 		this.holder = holder;
 		thread = new Thread(this);
 	}
 
-	// SurfaceView•ÏX‚ÉŒÄ‚Ño‚³‚ê‚é
+	// SurfaceViewå¤‰æ›´æ™‚ã«å‘¼ã³å‡ºã•ã‚Œã‚‹
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,
 			int height) {
-		// ƒXƒŒƒbƒhƒXƒ^[ƒg
+		// ã‚¹ãƒ¬ãƒƒãƒ‰ã‚¹ã‚¿ãƒ¼ãƒˆ
 		if (thread != null) {
 			thread.start();
 		}
 	}
 
-	// SurfaceView”jŠü‚ÉŒÄ‚Ño‚³‚ê‚é
+	// SurfaceViewç ´æ£„æ™‚ã«å‘¼ã³å‡ºã•ã‚Œã‚‹
 	public void surfaceDestroyed(SurfaceHolder holder) {
 		thread = null;
 	}
 
-	// ƒXƒŒƒbƒh‚É‚æ‚éSurfaceViewXVˆ—
+	// ã‚¹ãƒ¬ãƒƒãƒ‰ã«ã‚ˆã‚‹SurfaceViewæ›´æ–°å‡¦ç†
 	public void run() {
 		while (thread != null) {
-			// XVˆ—
+			// æ›´æ–°å‡¦ç†
 			update();
-			// •`‰æˆ—
+			// æç”»å‡¦ç†
 			Canvas canvas = holder.lockCanvas();
 			this.draw(canvas);
 			holder.unlockCanvasAndPost(canvas);
@@ -83,22 +83,22 @@ SurfaceHolder.Callback, Runnable {
 		}
 	}
 	
-	// XVˆ—
+	// æ›´æ–°å‡¦ç†
 	private void update(){
 		
 	}
 
-	// •`‰æˆ—
+	// æç”»å‡¦ç†
 	@Override
 	public void draw(Canvas canvas) {
 		if(canvas==null){
 			return;
 		}
-		//•`‰æˆ—
+		//æç”»å‡¦ç†
 		canvas.drawText("Hello Everyone!", 100, 100, paint);
 	}
 
-	// ƒ^ƒbƒ`ƒCƒxƒ“ƒg
+	// ã‚¿ãƒƒãƒã‚¤ãƒ™ãƒ³ãƒˆ
 	public boolean onTouchEvent(MotionEvent event) {
 		return true;
 	}

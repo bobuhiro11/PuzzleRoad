@@ -1,4 +1,4 @@
-package net.bobuhiro11.puzzleroad;
+ï»¿package net.bobuhiro11.puzzleroad;
 
 import android.media.AudioManager;
 import android.os.Bundle;
@@ -14,15 +14,15 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		//ƒ^ƒCƒgƒ‹ƒo[‚ğÁ‚·
+		//ã‚¿ã‚¤ãƒˆãƒ«ãƒãƒ¼ã‚’æ¶ˆã™
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		//ƒXƒe[ƒ^ƒXƒo[‚ğÁ‚·
+		//ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ãƒãƒ¼ã‚’æ¶ˆã™
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		Intent i = getIntent();
-		//Activity‚ğƒVƒ“ƒOƒ‹ƒgƒbƒv‚É‚·‚é
+		//Activityã‚’ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒƒãƒ—ã«ã™ã‚‹
 		i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 		setVolumeControlStream(AudioManager.STREAM_MUSIC); 
-		//View‚ğƒZƒbƒg
+		//Viewã‚’ã‚»ãƒƒãƒˆ
 		//setContentView(R.layout.activity_main);
 		setContentView(new MainView(this));
 	}
