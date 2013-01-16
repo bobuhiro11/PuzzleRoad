@@ -5,11 +5,14 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Display;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.WindowManager;
 
 public class MainView extends SurfaceView implements
 SurfaceHolder.Callback, Runnable {
@@ -19,24 +22,17 @@ SurfaceHolder.Callback, Runnable {
 	private long interval = 100;
 	private Runnable runnable;
 	private Handler handler = new Handler();
-
-	private Paint paint;
-	private Context context;
 	
-	//スライドの感度,低いほうがよい．
-	private int sensitivity=50;	
-	private int oldX=-1,oldY=-1;
+	private PlayPuzzle playPuzzle;
 	
 	public MainView(Context context) {
 		super(context);
 		
-		this.context = context;
 		
 		//リソースの準備
-		paint = new Paint();
-		paint.setColor(Color.WHITE);
-
-
+		WindowManager wm = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
+		Display disp = wm.getDefaultDisplay();
+		playPuzzle = new PlayPuzzle(context,new Rect(0,0,disp.getWidth(),disp.getWidth()),3);
 
 		// getHolder()メソッドでSurfaceHolderを取得。さらにコールバックを登録
 		getHolder().addCallback(this);
@@ -79,18 +75,13 @@ SurfaceHolder.Callback, Runnable {
 	public void run() {
 		while (thread != null) {
 			// 更新処理
-			update();
+			playPuzzle.update();
 			// 描画処理
 			Canvas canvas = holder.lockCanvas();
 			this.draw(canvas);
 			holder.unlockCanvasAndPost(canvas);
 
 		}
-	}
-	
-	// 更新処理
-	private void update(){
-		
 	}
 
 	// 描画処理
@@ -99,46 +90,12 @@ SurfaceHolder.Callback, Runnable {
 		if(canvas==null){
 			return;
 		}
-		//描画処理
-		canvas.drawText("Hello Everyone!", 100, 100, paint);
+		playPuzzle.draw(canvas);
 	}
 
 	// タッチイベント
 	public boolean onTouchEvent(MotionEvent event) {
-		switch (event.getAction()) {
-		case MotionEvent.ACTION_DOWN:
-			oldX = (int) event.getX();
-			oldY = (int) event.getY();
-			break;
-		case MotionEvent.ACTION_MOVE:
-			if(oldX!=-1 && oldY!=-1){
-				int dx = (int)event.getX() - oldX;
-				int dy = (int)event.getY() - oldY;
-				if(dx > sensitivity){
-					//右
-					Log.d("TouchEvent", "right");
-					oldX=-1;
-					oldY=-1;
-				}else if(dx < -sensitivity){
-					//左
-					Log.d("TouchEvent", "left");
-					oldX=-1;
-					oldY=-1;
-				}else if(dy > sensitivity){
-					//下
-					Log.d("TouchEvent", "down");
-					oldX=-1;
-					oldY=-1;
-				}else if(dy < -sensitivity){
-					//上
-					Log.d("TouchEvent", "up");
-					oldX=-1;
-					oldY=-1;
-				}
-			}
-			break;
-		}
+		playPuzzle.touch(event);
 		return true;
-		
 	}
 }
