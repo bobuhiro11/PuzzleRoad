@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Handler;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -21,6 +22,10 @@ SurfaceHolder.Callback, Runnable {
 
 	private Paint paint;
 	private Context context;
+	
+	//スライドの感度,低いほうがよい．
+	private int sensitivity=50;	
+	private int oldX=-1,oldY=-1;
 	
 	public MainView(Context context) {
 		super(context);
@@ -100,6 +105,40 @@ SurfaceHolder.Callback, Runnable {
 
 	// タッチイベント
 	public boolean onTouchEvent(MotionEvent event) {
+		switch (event.getAction()) {
+		case MotionEvent.ACTION_DOWN:
+			oldX = (int) event.getX();
+			oldY = (int) event.getY();
+			break;
+		case MotionEvent.ACTION_MOVE:
+			if(oldX!=-1 && oldY!=-1){
+				int dx = (int)event.getX() - oldX;
+				int dy = (int)event.getY() - oldY;
+				if(dx > sensitivity){
+					//右
+					Log.d("TouchEvent", "right");
+					oldX=-1;
+					oldY=-1;
+				}else if(dx < -sensitivity){
+					//左
+					Log.d("TouchEvent", "left");
+					oldX=-1;
+					oldY=-1;
+				}else if(dy > sensitivity){
+					//下
+					Log.d("TouchEvent", "down");
+					oldX=-1;
+					oldY=-1;
+				}else if(dy < -sensitivity){
+					//上
+					Log.d("TouchEvent", "up");
+					oldX=-1;
+					oldY=-1;
+				}
+			}
+			break;
+		}
 		return true;
+		
 	}
 }
