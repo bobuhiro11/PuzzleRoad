@@ -38,9 +38,9 @@ public class PlayPuzzle {
 	 */
 	public PlayPuzzle(Context context,Rect rect,int n){
 		paint = new Paint();
-		paint.setColor(Color.WHITE);
+		paint.setColor(Color.BLACK);
 		
-		puzzle = new Puzzle(new Point(n+2,n+2),new Point(0,1),new Point(4,3));
+		puzzle = new Puzzle(new Point(n+2,n+2),new Point(0,1),new Point(n+1,n));
 		this.rect = rect;
 		this.n = n;
 		
@@ -94,21 +94,29 @@ public class PlayPuzzle {
 	}
 	
 	/**
-	 * 何番目の列，または行かを調べる．
-	 * @param oldx
+	 * 何番目の行かを調べる．
 	 * @param oldy
-	 * @param newx
 	 * @param newy
-	 * @return 何列か０以上，ただし，どの列でもないときは-1を返す．
+	 * @return 何行か０以上，ただし，どの行でもないときは-1を返す．
 	 */
-	private int checkRaw(int oldx,int oldy,int newx,int newy){
-		int w = rect.width()/n;
+	private int checkRaw(int oldy,int newy){
 		int h = rect.height()/n;
 		//横
 		for(int y=0;y<n;y++)
 			if( rect.top + h*y<oldy && oldy<rect.top + h*(y+1) &&
 				rect.top + h*y<newy && newy<rect.top + h*(y+1)	)
 				return y;
+		return -1;
+	}
+	
+	/**
+	 * 何番目の列かを調べる．
+	 * @param oldx
+	 * @param newx
+	 * @return 何列か０以上，ただし，どの列でもないときは-1を返す．
+	 */
+	private int checkColumn(int oldx,int newx){
+		int w = rect.width()/n;
 		//縦
 		for(int x=0;x<n;x++)
 			if( rect.left + w*x<oldx && oldx<rect.left + w*(x+1) &&
@@ -125,39 +133,38 @@ public class PlayPuzzle {
 			break;
 		case MotionEvent.ACTION_MOVE:
 			if(oldX!=-1 && oldY!=-1){
-				int raw = this.checkRaw(oldX, oldY, (int)event.getX(), (int)event.getY());
-				if(raw!=-1){
-					int dx = (int)event.getX() - oldX;
-					int dy = (int)event.getY() - oldY;
-					if(dx > sensitivity){
-						//右
-						Log.d("TouchEvent", "right");
-						oldX=-1;
-						oldY=-1;
-						//debug
-						puzzle.move(raw+1, Direction.right);
-					}else if(dx < -sensitivity){
-						//左
-						Log.d("TouchEvent", "left");
-						oldX=-1;
-						oldY=-1;
-						//debug
-						puzzle.move(raw+1, Direction.left);
-					}else if(dy > sensitivity){
-						//下
-						Log.d("TouchEvent", "down");
-						oldX=-1;
-						oldY=-1;
-						//debug
-						puzzle.move(raw+1, Direction.down);
-					}else if(dy < -sensitivity){
-						//上
-						Log.d("TouchEvent", "up");
-						oldX=-1;
-						oldY=-1;
-						//debug
-						puzzle.move(raw+1, Direction.up);
-					}
+				int raw = this.checkRaw(oldY, (int)event.getY());
+				int column = this.checkColumn(oldX, (int)event.getX());
+				int dx = (int)event.getX() - oldX;
+				int dy = (int)event.getY() - oldY;
+				if(dx > sensitivity && raw!=-1){
+					//右
+					Log.d("TouchEvent", "right"+raw);
+					oldX=-1;
+					oldY=-1;
+					//debug
+					puzzle.move(raw+1, Direction.right);
+				}else if(dx < -sensitivity && raw!=-1){
+					//左
+					Log.d("TouchEvent", "left"+raw);
+					oldX=-1;
+					oldY=-1;
+					//debug
+					puzzle.move(raw+1, Direction.left);
+				}else if(dy > sensitivity && column!=-1){
+					//下
+					Log.d("TouchEvent", "down"+column);
+					oldX=-1;
+					oldY=-1;
+					//debug
+					puzzle.move(column+1, Direction.down);
+				}else if(dy < -sensitivity && column!=-1){
+					//上
+					Log.d("TouchEvent", "up"+column);
+					oldX=-1;
+					oldY=-1;
+					//debug
+					puzzle.move(column+1, Direction.up);
 				}
 			}
 			break;

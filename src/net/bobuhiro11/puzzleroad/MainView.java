@@ -32,7 +32,7 @@ SurfaceHolder.Callback, Runnable {
 		//リソースの準備
 		WindowManager wm = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
 		Display disp = wm.getDefaultDisplay();
-		playPuzzle = new PlayPuzzle(context,new Rect(0,0,disp.getWidth(),disp.getWidth()),3);
+		playPuzzle = new PlayPuzzle(context,new Rect(40,40,disp.getWidth()-40,disp.getWidth()-40),4);
 
 		// getHolder()メソッドでSurfaceHolderを取得。さらにコールバックを登録
 		getHolder().addCallback(this);
