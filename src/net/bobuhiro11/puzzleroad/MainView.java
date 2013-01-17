@@ -19,7 +19,7 @@ SurfaceHolder.Callback, Runnable {
 
 	private SurfaceHolder holder;
 	private Thread thread;
-	private long interval = 100;
+	private long interval = 1;
 	private Runnable runnable;
 	private Handler handler = new Handler();
 	
@@ -32,7 +32,7 @@ SurfaceHolder.Callback, Runnable {
 		//リソースの準備
 		WindowManager wm = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
 		Display disp = wm.getDefaultDisplay();
-		playPuzzle = new PlayPuzzle(context,new Rect(40,40,disp.getWidth()-40,disp.getWidth()-40),4);
+		playPuzzle = new PlayPuzzle(context,new Rect(0,0,disp.getWidth(),disp.getWidth()),3);
 
 		// getHolder()メソッドでSurfaceHolderを取得。さらにコールバックを登録
 		getHolder().addCallback(this);
@@ -48,7 +48,7 @@ SurfaceHolder.Callback, Runnable {
 
 	//タイマーイベント(intervalごとに呼ばれる．)
 	private void TimerEvent() {
-
+		playPuzzle.timer();
 	}
 
 	// SurfaceView生成時に呼び出される
