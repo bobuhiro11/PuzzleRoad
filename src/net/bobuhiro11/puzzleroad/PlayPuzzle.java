@@ -1,7 +1,9 @@
 package net.bobuhiro11.puzzleroad;
 
 import net.bobuhiro11.puzzleroadconsole.*;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,6 +14,7 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.widget.Toast;
 
 public class PlayPuzzle {
 
@@ -47,6 +50,8 @@ public class PlayPuzzle {
 	 * @param n　nマス×nマス
 	 */
 	public PlayPuzzle(Context context,Rect rect,int n){
+		this.context = context;
+		
 		paint = new Paint();
 		paint.setColor(Color.BLACK);
 		
@@ -85,7 +90,7 @@ public class PlayPuzzle {
 		int h = rect.height()/n;
 		Rect src = new Rect(0,0,140,140);
 		Cell[][] cells = puzzle.cells;
-		boolean[][] ans = puzzle.checkAnswer();
+		boolean[][] ans = puzzle.checkAnswerStart();
 		
 		//アニメーション(実際はないマスだけどアニメーションには必要)
 		if(ani_moving!=-1){
@@ -266,10 +271,24 @@ public class PlayPuzzle {
 		if(ani_moving != -1){
 			ani_moving += 1;
 			if(ani_moving >= rect.width()/n){
-				//実際の移動
-				puzzle.move(ani_rawColumn+1, ani_direction);
 				//アニメーション終わり
 				ani_moving = -1;
+				//実際の移動
+				puzzle.move(ani_rawColumn+1, ani_direction);
+				//パズル完成
+				if(puzzle.isComplete()){
+					new AlertDialog.Builder(context)
+					.setTitle("Complete!!")
+					.setMessage("")
+					.setPositiveButton("OK", new DialogInterface.OnClickListener(){
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							//パズルを初期化
+							puzzle = new Puzzle(new Point(n+2,n+2),new Point(0,1),new Point(n+1,n));
+						}
+					})
+					.show();
+				}
 			}
 		}
 	}

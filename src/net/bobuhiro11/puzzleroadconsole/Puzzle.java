@@ -106,6 +106,15 @@ public class Puzzle {
 		//debugAnswer(c);
 		return c;
 	}
+	
+	/**
+	 * パズルの中で，セルが正しく配置されているところを調べる．ただし，先頭からのみ調べる
+	 * @param cells セルの集合
+	 * @return 正しく道ができているところをt,間違っているところはf
+	 */
+	public boolean[][] checkAnswerStart(){
+		return checkAnswer(cells,start,goal);
+	}
 		
 	/**
 	 * @param cells セルの集合
