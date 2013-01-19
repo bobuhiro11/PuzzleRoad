@@ -2,6 +2,9 @@
 
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -23,7 +26,11 @@ SurfaceHolder.Callback, Runnable {
 	private Runnable runnable;
 	private Handler handler = new Handler();
 	
+	//パズル本体
 	private PlayPuzzle playPuzzle;
+	
+	//背景画像
+	private Bitmap backGround;
 	
 	public MainView(Context context) {
 		super(context);
@@ -32,7 +39,13 @@ SurfaceHolder.Callback, Runnable {
 		//リソースの準備
 		WindowManager wm = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
 		Display disp = wm.getDefaultDisplay();
-		playPuzzle = new PlayPuzzle(context,new Rect(0,0,disp.getWidth(),disp.getWidth()),4);
+		playPuzzle = new PlayPuzzle(
+				context,
+				new Rect(disp.getWidth()/14,disp.getHeight()/3,disp.getWidth()*13/14+2,disp.getHeight()*5/6),
+				4);
+		
+		Resources r = context.getResources();
+        backGround = BitmapFactory.decodeResource(r, R.drawable.background_game);
 
 		// getHolder()メソッドでSurfaceHolderを取得。さらにコールバックを登録
 		getHolder().addCallback(this);
@@ -91,6 +104,7 @@ SurfaceHolder.Callback, Runnable {
 			return;
 		}
 		playPuzzle.draw(canvas);
+		canvas.drawBitmap(backGround, new Rect(0,0,700,1200), new Rect(0,0,canvas.getWidth(),canvas.getHeight()), null);
 	}
 
 	// タッチイベント
