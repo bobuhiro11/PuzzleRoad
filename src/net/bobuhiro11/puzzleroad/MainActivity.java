@@ -20,7 +20,7 @@ public class MainActivity extends Activity {
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		Intent i = getIntent();
 		//Activityをシングルトップにする
-		i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+		//i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 		setVolumeControlStream(AudioManager.STREAM_MUSIC); 
 		//Viewをセット
 		//setContentView(R.layout.activity_main);

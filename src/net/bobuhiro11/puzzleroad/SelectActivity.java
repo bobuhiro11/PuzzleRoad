@@ -27,7 +27,7 @@ public class SelectActivity extends Activity implements OnClickListener {
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		Intent i = getIntent();
 		//Activityをシングルトップにする
-		i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+		//i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 		setVolumeControlStream(AudioManager.STREAM_MUSIC); 
 		setContentView(R.layout.activity_select);
 		
