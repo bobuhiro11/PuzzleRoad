@@ -67,7 +67,7 @@ public class PlayPuzzle {
         a[3] = BitmapFactory.decodeResource(r, R.drawable.a3);
         a[4] = BitmapFactory.decodeResource(r, R.drawable.a4);
         a[5] = BitmapFactory.decodeResource(r, R.drawable.a5);
-        a[6] = BitmapFactory.decodeResource(r, R.drawable.aorigin);
+        a[6] = BitmapFactory.decodeResource(r, R.drawable.a6);
 		b = new Bitmap[7];
         b[0] = BitmapFactory.decodeResource(r, R.drawable.b0);
         b[1] = BitmapFactory.decodeResource(r, R.drawable.b1);
@@ -75,7 +75,7 @@ public class PlayPuzzle {
         b[3] = BitmapFactory.decodeResource(r, R.drawable.b3);
         b[4] = BitmapFactory.decodeResource(r, R.drawable.b4);
         b[5] = BitmapFactory.decodeResource(r, R.drawable.b5);
-        b[6] = BitmapFactory.decodeResource(r, R.drawable.borigin);
+        b[6] = BitmapFactory.decodeResource(r, R.drawable.b6);
         
 	}
 	

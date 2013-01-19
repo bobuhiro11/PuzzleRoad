@@ -17,16 +17,16 @@ public final class R {
         public static final int a3=0x7f020003;
         public static final int a4=0x7f020004;
         public static final int a5=0x7f020005;
-        public static final int aorigin=0x7f020006;
+        public static final int a6=0x7f020006;
         public static final int b0=0x7f020007;
         public static final int b1=0x7f020008;
         public static final int b2=0x7f020009;
         public static final int b3=0x7f02000a;
         public static final int b4=0x7f02000b;
         public static final int b5=0x7f02000c;
-        public static final int background=0x7f02000d;
-        public static final int background_game=0x7f02000e;
-        public static final int borigin=0x7f02000f;
+        public static final int b6=0x7f02000d;
+        public static final int background=0x7f02000e;
+        public static final int background_game=0x7f02000f;
         public static final int ic_launcher=0x7f020010;
         public static final int title=0x7f020011;
     }
