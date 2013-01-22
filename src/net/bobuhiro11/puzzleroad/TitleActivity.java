@@ -48,7 +48,7 @@ public class TitleActivity extends Activity implements OnClickListener {
 		Toast.makeText(this, "ようこそ",Toast.LENGTH_SHORT).show();
 		
 		//セレクターへ画面遷移
-		Intent intent = new Intent(TitleActivity.this,SelectActivity.class);
+		Intent intent = new Intent(TitleActivity.this,MainActivity.class);
 		intent.setAction(Intent.ACTION_VIEW);
 		startActivity(intent);
 	}
