@@ -86,6 +86,17 @@ public class Puzzle {
 		return r;
 	}
 	
+	
+	/**
+	 * パズルが出来上がっているかどうか
+	 * @param cells セルの集合
+	 */
+	private boolean isComplete(Cell[][] cells){
+		boolean[][] a = checkAnswer(cells,start,goal);
+		boolean r = a[start.x][start.y] && a[goal.x][goal.y];
+		return r;
+	}
+	
 	/**
 	 * パズルの中で，セルが正しく配置されているところを調べる．
 	 * @param cells セルの集合
@@ -221,6 +232,19 @@ public class Puzzle {
 				r=rand.nextInt(max.y-2)+1;
 				this.move(cells,r,d);
 			}
+		}
+		//いきなり成功するのは防ぐ
+		while(isComplete(cells)){
+			if(rand.nextInt(2)==1){
+				d=Direction.down;
+				r=rand.nextInt(max.x-2)+1;
+				this.move(cells,r,d);
+			}else{
+				d=Direction.up;
+				r=rand.nextInt(max.y-2)+1;
+				this.move(cells,r,d);
+			}
+			
 		}
 		
 		debugCells(cells);

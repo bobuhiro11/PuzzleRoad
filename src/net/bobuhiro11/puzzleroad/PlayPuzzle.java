@@ -42,6 +42,8 @@ public class PlayPuzzle {
 	private Direction ani_direction;
 	//移動量 -1のときは動いていない
 	private int ani_moving=-1;
+	//一ミリ秒間で移動量
+	private int ani_moving_per_time;
 	
 	/**
 	 * パズルをするためのViewの一部
@@ -77,6 +79,7 @@ public class PlayPuzzle {
         b[5] = BitmapFactory.decodeResource(r, R.drawable.b5);
         b[6] = BitmapFactory.decodeResource(r, R.drawable.b6);
         
+        this.ani_moving_per_time = rect.width() / 100;
 	}
 	
 	public void update(){
@@ -269,7 +272,7 @@ public class PlayPuzzle {
 	//タイマー処理
 	public void timer() {
 		if(ani_moving != -1){
-			ani_moving += 1;
+			ani_moving += ani_moving_per_time;
 			if(ani_moving >= rect.width()/n){
 				//アニメーション終わり
 				ani_moving = -1;
