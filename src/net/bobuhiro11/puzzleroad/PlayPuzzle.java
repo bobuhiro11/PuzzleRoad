@@ -59,7 +59,7 @@ public class  PlayPuzzle{
 		paint = new Paint();
 		paint.setColor(Color.WHITE);
 		
-		puzzle = new Puzzle(new Point(n+2,n+2),new Point(1,0),new Point(n,n+1));
+		puzzle = new Puzzle(n+2,1);
 		this.rect = rect;
 		this.n = n;
 		
@@ -290,12 +290,7 @@ public class  PlayPuzzle{
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
 							//パズルを初期化
-							Random rand = new Random();
-							Point start = new Point(rand.nextInt(n)+1,0);
-							Point goal = new Point(rand.nextInt(n)+1,n+1);
-							puzzle = new Puzzle(new Point(n+2,n+2),start,goal);
-							Log.d("start", start.toString());					
-							Log.d("goal", goal.toString());					
+							puzzle = new Puzzle(n+2,1);
 							}
 					})
 					.show();

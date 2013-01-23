@@ -5,6 +5,7 @@ import java.awt.*;
 import java.util.*;
 
 import android.graphics.Point;
+import android.util.Log;
 
 
 /**
@@ -25,12 +26,38 @@ public class Puzzle {
 	 * @param start 開始点
 	 * @param goal 終了点 
 	 */
+	/*
 	public Puzzle(Point max,Point start,Point goal){
 
 		this.max = max;
 		this.start = start;
 		this.goal = goal;
 		this.cells = this.makeRandomCells(); 
+	}
+	*/
+	
+	/**
+	 * パズルの盤面を作成する．完成することは保証されるが，完成はしていない．
+	 * @param max  盤面の大きさ（一回り大きく）
+	 * @param mode どのモードで盤面を作るのか．
+	 * 1:スタートと，ゴールの位置を上下から自動で決定する．
+	 */
+	public Puzzle(int max,int mode){
+		this.max = new Point(max,max);
+		
+		switch(mode){
+		case 1:
+			int n = max-2;
+			Random rand = new Random();
+			start = new Point(rand.nextInt(n)+1,0);
+			goal = new Point(rand.nextInt(n)+1,n+1);
+			cells = this.makeRandomCells();
+			break;
+		}
+		
+		Log.d("start", start.toString());
+		Log.d("goal", goal.toString());
+		
 	}
 	
 	/**
