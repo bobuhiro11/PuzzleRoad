@@ -41,23 +41,34 @@ SurfaceHolder.Callback, Runnable {
 	public MainView(Context context) {
 		super(context);
 		
-		//リソースの準備
+		//画面サイズ取得
 		WindowManager wm = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
 		Display disp = wm.getDefaultDisplay();
 		int w = disp.getWidth();
 		int h = disp.getHeight();
+		
+		//はじめのゲームのサイズを決定
+		int n = 4;
+		
+        //パズル部の生成
 		playPuzzle = new PlayPuzzle(
 				context,
 				new Rect(w/14,h/3,w*13/14,h*5/6),
-				4);
+				n);
+		
+        //スタートとゴールのオブジェクト生成
+        startObject = new Person(context,playPuzzle.puzzle.start,
+        		playPuzzle.rect,n,R.drawable.person);
+        goalObject = new Person(context,playPuzzle.puzzle.goal,
+        		playPuzzle.rect,n,R.drawable.flag);
+        
+        //パズル部にスタートとゴールを結びつける
+        playPuzzle.startObject = startObject;
+        playPuzzle.goalObject = goalObject;
+        
 		
 		Resources r = context.getResources();
         backGround = BitmapFactory.decodeResource(r, R.drawable.background_game);
-        
-        //スタートとゴールのオブジェクト生成
-        //ここから
-        startObject = new Person(context,new Rect(0,300,200,500),R.drawable.person);
-        goalObject = new Person(context,new Rect(0,0,200,200),R.drawable.flag);
 
 		// getHolder()メソッドでSurfaceHolderを取得。さらにコールバックを登録
 		getHolder().addCallback(this);

@@ -27,13 +27,13 @@ public class  PlayPuzzle{
 	private int sensitivity=50;	
 	private int oldX=-1,oldY=-1;
 	
-	private Puzzle puzzle;
+	public Puzzle puzzle;
 	
 	private Bitmap[] a;
 	private Bitmap[] b;
 	
 	//描画領域
-	private Rect rect;
+	public Rect rect;
 	//n×nマス
 	private int n;
 	
@@ -46,6 +46,10 @@ public class  PlayPuzzle{
 	private int ani_moving=-1;
 	//一ミリ秒間で移動量
 	private int ani_moving_per_time;
+	
+	
+	//スタート，ゴールオブジェクト
+	public Person startObject,goalObject;
 	
 	/**
 	 * パズルをするためのViewの一部
@@ -291,7 +295,10 @@ public class  PlayPuzzle{
 						public void onClick(DialogInterface dialog, int which) {
 							//パズルを初期化
 							puzzle = new Puzzle(n+2,1);
-							}
+							//スタート，ゴールオブジェクト更新
+							startObject.setPoint(puzzle.start);
+							goalObject.setPoint(puzzle.goal);
+						}
 					})
 					.show();
 				}
