@@ -14,7 +14,7 @@ import android.graphics.Point;
  */
 public class Puzzle {
 	private Point max;
-	private Point start,goal;
+	public Point start,goal;
 	
 	// Puzzle(),move()以外からは変更をしない．
 	public Cell[][] cells;

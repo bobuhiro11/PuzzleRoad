@@ -41,12 +41,6 @@ SurfaceHolder.Callback, Runnable {
 	public MainView(Context context) {
 		super(context);
 		
-		//盤面の大きさとスタートとゴールを決定
-		int n=4;
-		Random rand = new Random();
-		Point start = new Point(rand.nextInt(n)+1,0);
-		Point goal = new Point(rand.nextInt(n)+1,n+1);
-		
 		//リソースの準備
 		WindowManager wm = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
 		Display disp = wm.getDefaultDisplay();
@@ -55,7 +49,7 @@ SurfaceHolder.Callback, Runnable {
 		playPuzzle = new PlayPuzzle(
 				context,
 				new Rect(w/14,h/3,w*13/14,h*5/6),
-				n,start,goal);
+				4);
 		
 		Resources r = context.getResources();
         backGround = BitmapFactory.decodeResource(r, R.drawable.background_game);

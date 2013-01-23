@@ -1,5 +1,7 @@
 package net.bobuhiro11.puzzleroad;
 
+import java.util.Random;
+
 import net.bobuhiro11.puzzleroadconsole.*;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -16,7 +18,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.Toast;
 
-public class PlayPuzzle {
+public class  PlayPuzzle{
 
 	private Paint paint;
 	private Context context;
@@ -50,53 +52,14 @@ public class PlayPuzzle {
 	 * @param context コンテキスト
 	 * @param rect 描画サイズ
 	 * @param n　nマス×nマス
-	 * @param start	スタートの座標
-	 * @param goal	ゴールの座標
 	 */
-	public PlayPuzzle(Context context,Rect rect, int n,Point start,Point goal){
+	public PlayPuzzle(Context context,Rect rect,int n){
 		this.context = context;
 		
 		paint = new Paint();
 		paint.setColor(Color.WHITE);
 		
-		puzzle = new Puzzle(new Point(n+2,n+2),start,goal);
-		this.rect = rect;
-		this.n = n;
-		
-		Resources r = context.getResources();
-		a = new Bitmap[7];
-        a[0] = BitmapFactory.decodeResource(r, R.drawable.a0);
-        a[1] = BitmapFactory.decodeResource(r, R.drawable.a1);
-        a[2] = BitmapFactory.decodeResource(r, R.drawable.a2);
-        a[3] = BitmapFactory.decodeResource(r, R.drawable.a3);
-        a[4] = BitmapFactory.decodeResource(r, R.drawable.a4);
-        a[5] = BitmapFactory.decodeResource(r, R.drawable.a5);
-        a[6] = BitmapFactory.decodeResource(r, R.drawable.a6);
-		b = new Bitmap[7];
-        b[0] = BitmapFactory.decodeResource(r, R.drawable.b0);
-        b[1] = BitmapFactory.decodeResource(r, R.drawable.b1);
-        b[2] = BitmapFactory.decodeResource(r, R.drawable.b2);
-        b[3] = BitmapFactory.decodeResource(r, R.drawable.b3);
-        b[4] = BitmapFactory.decodeResource(r, R.drawable.b4);
-        b[5] = BitmapFactory.decodeResource(r, R.drawable.b5);
-        b[6] = BitmapFactory.decodeResource(r, R.drawable.b6);
-        
-        this.ani_moving_per_time = rect.width() / 100;
-	}
-	
-	/**
-	 * パズルをするためのViewの一部
-	 * @param context コンテキスト
-	 * @param rect 描画サイズ
-	 * @param n　nマス×nマス
-	 */
-	private PlayPuzzle(Context context,Rect rect,int n){
-		this.context = context;
-		
-		paint = new Paint();
-		paint.setColor(Color.WHITE);
-		
-		puzzle = new Puzzle(new Point(n+2,n+2),new Point(0,1),new Point(n+1,n));
+		puzzle = new Puzzle(new Point(n+2,n+2),new Point(1,0),new Point(n,n+1));
 		this.rect = rect;
 		this.n = n;
 		
@@ -327,8 +290,13 @@ public class PlayPuzzle {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
 							//パズルを初期化
-							puzzle = new Puzzle(new Point(n+2,n+2),new Point(0,1),new Point(n+1,n));
-						}
+							Random rand = new Random();
+							Point start = new Point(rand.nextInt(n)+1,0);
+							Point goal = new Point(rand.nextInt(n)+1,n+1);
+							puzzle = new Puzzle(new Point(n+2,n+2),start,goal);
+							Log.d("start", start.toString());					
+							Log.d("goal", goal.toString());					
+							}
 					})
 					.show();
 				}
