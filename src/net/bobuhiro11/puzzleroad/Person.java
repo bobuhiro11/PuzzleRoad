@@ -15,6 +15,12 @@ public class Person {
 	Context context;
 	Rect dst,src;
 	
+	/**
+	 * 動きのある物体を生成する．
+	 * @param context コンテキスト
+	 * @param dst　描画領域
+	 * @param id　画像のid
+	 */
 	public Person(Context context,Rect dst,int id){
 		this.context = context;
 		this.dst = dst;
@@ -25,12 +31,24 @@ public class Person {
         bmp = BitmapFactory.decodeResource(r, id);
 	}
 	
+	/**
+	 * 更新処理
+	 */
 	public void update(){
 		
 	}
+	
+	/**
+	 * タイマー処理
+	 */
 	public void timer(){
 		
 	}
+	
+	/**
+	 * 描画処理
+	 * @param canvas キャンパス
+	 */
 	public void draw(Canvas canvas){
 		canvas.drawBitmap(bmp, src,dst, paint);
 	}

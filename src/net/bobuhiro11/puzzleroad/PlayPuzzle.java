@@ -35,9 +35,6 @@ public class PlayPuzzle {
 	//n×nマス
 	private int n;
 	
-	//ゴール
-	private Person goal;
-	
 	//**移動アニメーション
 	//移動する列，行
 	private int ani_rawColumn;
@@ -63,8 +60,6 @@ public class PlayPuzzle {
 		puzzle = new Puzzle(new Point(n+2,n+2),new Point(0,1),new Point(n+1,n));
 		this.rect = rect;
 		this.n = n;
-		
-		goal = new Person(context,new Rect(0,0,100,100),R.drawable.flag);
 		
 		Resources r = context.getResources();
 		a = new Bitmap[7];
@@ -180,9 +175,8 @@ public class PlayPuzzle {
 			}
 		}
 		//あとで消しとく．
-		//canvas.drawRect(0, rect.bottom, canvas.getWidth(), canvas.getHeight(), paint);
-		//ゴール
-		goal.draw(canvas);
+		canvas.drawRect(0, rect.bottom, canvas.getWidth(), canvas.getHeight(), paint);
+		canvas.drawRect(rect.right, 0, canvas.getWidth(), canvas.getHeight(), paint);
 	}
 	
 	/**

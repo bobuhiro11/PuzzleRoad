@@ -32,6 +32,9 @@ SurfaceHolder.Callback, Runnable {
 	//背景画像
 	private Bitmap backGround;
 	
+	//ゴール
+	private Person goal;
+	
 	public MainView(Context context) {
 		super(context);
 		
@@ -41,11 +44,12 @@ SurfaceHolder.Callback, Runnable {
 		Display disp = wm.getDefaultDisplay();
 		playPuzzle = new PlayPuzzle(
 				context,
-				new Rect(disp.getWidth()/14,disp.getHeight()/3,disp.getWidth()*13/14+2,disp.getHeight()*5/6),
+				new Rect(disp.getWidth()/14,disp.getHeight()/3,disp.getWidth()*13/14,disp.getHeight()*5/6),
 				4);
 		
 		Resources r = context.getResources();
         backGround = BitmapFactory.decodeResource(r, R.drawable.background_game);
+        goal = new Person(context,new Rect(0,0,200,200),R.drawable.flag);
 
 		// getHolder()メソッドでSurfaceHolderを取得。さらにコールバックを登録
 		getHolder().addCallback(this);
@@ -105,6 +109,7 @@ SurfaceHolder.Callback, Runnable {
 		}
 		playPuzzle.draw(canvas);
 		canvas.drawBitmap(backGround, new Rect(0,0,700,1200), new Rect(0,0,canvas.getWidth(),canvas.getHeight()), null);
+		goal.draw(canvas);
 	}
 
 	// タッチイベント
