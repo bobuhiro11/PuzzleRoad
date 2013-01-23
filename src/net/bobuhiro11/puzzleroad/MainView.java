@@ -1,6 +1,8 @@
 ﻿package net.bobuhiro11.puzzleroad; 
 
 
+import java.util.Random;
+
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -8,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Handler;
 import android.util.Log;
@@ -32,24 +35,35 @@ SurfaceHolder.Callback, Runnable {
 	//背景画像
 	private Bitmap backGround;
 	
-	//ゴール
-	private Person goal;
+	//ゴールとスタートのオブジェクト
+	private Person goalObject,startObject;
 	
 	public MainView(Context context) {
 		super(context);
 		
+		//盤面の大きさとスタートとゴールを決定
+		int n=4;
+		Random rand = new Random();
+		Point start = new Point(rand.nextInt(n)+1,0);
+		Point goal = new Point(rand.nextInt(n)+1,n+1);
 		
 		//リソースの準備
 		WindowManager wm = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
 		Display disp = wm.getDefaultDisplay();
+		int w = disp.getWidth();
+		int h = disp.getHeight();
 		playPuzzle = new PlayPuzzle(
 				context,
-				new Rect(disp.getWidth()/14,disp.getHeight()/3,disp.getWidth()*13/14,disp.getHeight()*5/6),
-				4);
+				new Rect(w/14,h/3,w*13/14,h*5/6),
+				n,start,goal);
 		
 		Resources r = context.getResources();
         backGround = BitmapFactory.decodeResource(r, R.drawable.background_game);
-        goal = new Person(context,new Rect(0,0,200,200),R.drawable.flag);
+        
+        //スタートとゴールのオブジェクト生成
+        //ここから
+        startObject = new Person(context,new Rect(0,300,200,500),R.drawable.person);
+        goalObject = new Person(context,new Rect(0,0,200,200),R.drawable.flag);
 
 		// getHolder()メソッドでSurfaceHolderを取得。さらにコールバックを登録
 		getHolder().addCallback(this);
@@ -66,6 +80,7 @@ SurfaceHolder.Callback, Runnable {
 	//タイマーイベント(intervalごとに呼ばれる．)
 	private void TimerEvent() {
 		playPuzzle.timer();
+		startObject.timer();
 	}
 
 	// SurfaceView生成時に呼び出される
@@ -93,6 +108,7 @@ SurfaceHolder.Callback, Runnable {
 		while (thread != null) {
 			// 更新処理
 			playPuzzle.update();
+			startObject.update();
 			// 描画処理
 			Canvas canvas = holder.lockCanvas();
 			this.draw(canvas);
@@ -109,7 +125,8 @@ SurfaceHolder.Callback, Runnable {
 		}
 		playPuzzle.draw(canvas);
 		canvas.drawBitmap(backGround, new Rect(0,0,700,1200), new Rect(0,0,canvas.getWidth(),canvas.getHeight()), null);
-		goal.draw(canvas);
+		goalObject.draw(canvas);
+		startObject.draw(canvas);
 	}
 
 	// タッチイベント
