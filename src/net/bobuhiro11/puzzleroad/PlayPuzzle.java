@@ -93,11 +93,32 @@ public class  PlayPuzzle{
 	/**
 	 * パズル完了時に使う．
 	 * スタートからゴールまでの各マスの左上の座標をリストにしたもの．
-	 * @return	座標のリスト
+	 * @return	座標のリスト(スタート，ゴールを含む)
 	 */
 	public ArrayList<Point> routePosition(){
 		ArrayList<Point> list = new ArrayList<Point>();
-		return null;
+		int[][] route = puzzle.checkRoute(puzzle.cells, puzzle.start, puzzle.goal);
+		int index = 1;
+		while(true){
+			for(int x=0;x<n+2;x++){
+				for(int y=0;y<n+2;y++){
+					if(route[x][y] ==index){
+						// m番目の座標発見
+						int cellWidth = rect.width() / n;
+						int cellHeight = rect.height() /n;
+						Point p = new Point(
+								rect.left + cellWidth*(x-1),
+								rect.top  +cellHeight*(y-1));
+						list.add(p);
+						index++;
+					}
+					if(x==puzzle.goal.x && y==puzzle.goal.y){
+						//ゴールへ到達
+						return list;
+					}
+				}
+			}
+		}
 	}
 	
 	public void update(){
@@ -299,6 +320,9 @@ public class  PlayPuzzle{
 				puzzle.move(ani_rawColumn+1, ani_direction);
 				//パズル完成
 				if(puzzle.isComplete()){
+					//デバッグ
+					ArrayList<Point> a = this.routePosition();
+					//ダイアログ
 					new AlertDialog.Builder(context)
 					.setTitle("Complete!!")
 					.setMessage("")
