@@ -3,7 +3,11 @@
 
 import java.util.Random;
 
+import net.bobuhiro11.puzzleroadconsole.Puzzle;
+
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -28,9 +32,10 @@ SurfaceHolder.Callback, Runnable {
 	private long interval = 1;
 	private Runnable runnable;
 	private Handler handler = new Handler();
+	private Context context;
 	
 	//パズル本体
-	private PlayPuzzle playPuzzle;
+	public PlayPuzzle playPuzzle;
 	
 	//背景画像
 	private Bitmap backGround;
@@ -38,8 +43,18 @@ SurfaceHolder.Callback, Runnable {
 	//ゴールとスタートのオブジェクト
 	private Person goalObject,startObject;
 	
+	//ゲームのサイズを決定
+	private int n = 4;
+	
+	/**
+	 * 現在のゲームの状態
+	 */
+	public Status status;
+	
 	public MainView(Context context) {
 		super(context);
+		
+		this.context = context;
 		
 		//画面サイズ取得
 		WindowManager wm = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
@@ -47,20 +62,18 @@ SurfaceHolder.Callback, Runnable {
 		int w = disp.getWidth();
 		int h = disp.getHeight();
 		
-		//はじめのゲームのサイズを決定
-		int n = 4;
 		
         //パズル部の生成
 		playPuzzle = new PlayPuzzle(
-				context,
+				context,this,
 				new Rect(w/14,h/3,w*13/14,h*5/6),
 				n);
 		
         //スタートとゴールのオブジェクト生成
         startObject = new Person(context,playPuzzle.puzzle.start,
-        		playPuzzle.rect,n,R.drawable.person);
+        		playPuzzle.rect,n,R.drawable.person,this);
         goalObject = new Person(context,playPuzzle.puzzle.goal,
-        		playPuzzle.rect,n,R.drawable.flag);
+        		playPuzzle.rect,n,R.drawable.flag,this);
         
         //パズル部にスタートとゴールを結びつける
         playPuzzle.startObject = startObject;
@@ -69,6 +82,8 @@ SurfaceHolder.Callback, Runnable {
 		
 		Resources r = context.getResources();
         backGround = BitmapFactory.decodeResource(r, R.drawable.background_game);
+        
+        status=Status.playing;
 
 		// getHolder()メソッドでSurfaceHolderを取得。さらにコールバックを登録
 		getHolder().addCallback(this);
@@ -84,8 +99,28 @@ SurfaceHolder.Callback, Runnable {
 
 	//タイマーイベント(intervalごとに呼ばれる．)
 	private void TimerEvent() {
-		playPuzzle.timer();
-		startObject.timer();
+		if(status==Status.playing){
+			playPuzzle.timer();
+		}else if(status==Status.personMovin){
+			this.startObject.timer();
+		}else if(status==Status.dialog){
+			status = Status.playing;
+			new AlertDialog.Builder(context)
+			.setTitle("Complete!!")
+			.setMessage("")
+			.setPositiveButton("OK", new DialogInterface.OnClickListener(){
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					//パズルを初期化
+					playPuzzle.puzzle = new Puzzle(n+2,1);
+					//スタート，ゴールオブジェクト更新
+					startObject.setPoint(playPuzzle.puzzle.start);
+					goalObject.setPoint(playPuzzle.puzzle.goal);
+				}
+			})
+			.show();
+		}
+		
 	}
 
 	// SurfaceView生成時に呼び出される
@@ -112,13 +147,17 @@ SurfaceHolder.Callback, Runnable {
 	public void run() {
 		while (thread != null) {
 			// 更新処理
-			playPuzzle.update();
-			startObject.update();
+			if(status==Status.playing){
+				playPuzzle.update();
+			}else if(status==Status.personMovin){
+				startObject.update();
+			}else if(status==Status.dialog){
+			}
 			// 描画処理
 			Canvas canvas = holder.lockCanvas();
 			this.draw(canvas);
 			holder.unlockCanvasAndPost(canvas);
-
+			
 		}
 	}
 
@@ -136,7 +175,9 @@ SurfaceHolder.Callback, Runnable {
 
 	// タッチイベント
 	public boolean onTouchEvent(MotionEvent event) {
-		playPuzzle.touch(event);
+		if(status==Status.playing){
+			playPuzzle.touch(event);
+		}
 		return true;
 	}
 }

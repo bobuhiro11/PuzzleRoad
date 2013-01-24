@@ -1,5 +1,7 @@
 package net.bobuhiro11.puzzleroad;
 
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -9,6 +11,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.util.Log;
 
 public class Person {
 	Paint paint;
@@ -21,6 +24,14 @@ public class Person {
 	//nマス*nマス
 	int n;
 	
+	//MainView
+	MainView mainView;
+	
+	/**
+	 * これから辿っていく座標一覧
+	 */
+	ArrayList<Point> positions;
+	
 	/**
 	 * 動きのある物体を生成する．
 	 * @param context コンテキスト
@@ -29,7 +40,8 @@ public class Person {
 	 * @param n　nマス*nマス
 	 * @param id　画像のid
 	 */
-	public Person(Context context,Point point,Rect rect,int n,int id){
+	public Person(Context context,Point point,Rect rect,int n,int id,MainView mainView){
+		this.mainView = mainView;
 		this.context = context;
 		this.src = new Rect(0,0,140,140);
 		this.paint = new Paint(Color.WHITE);
@@ -55,18 +67,47 @@ public class Person {
         		rect.left + cellWidth * point.x,
         		rect.top + cellHeight * point.y);
 	}
+	
+	/**
+	 * 画像の場所を設定する．
+	 * @param point 画面上の左上の実座標
+	 */
+	public void setPositon(Point point){
+        int cellWidth  = (rect.right - rect.left) /n;
+        int cellHeight = (rect.bottom - rect.top) /n;
+        dst = new Rect(
+        		point.x,
+        		point.y,
+        		point.x + cellWidth,
+        		point.y + cellHeight);
+	}
+	
+	/**
+	 * これから辿っていく座標一覧
+	 * @param positions　画面上で左上が通るべき実座標
+	 */
+	public void setPositions(ArrayList<Point> positions){
+		this.positions = positions;
+	}
+	
 	/**
 	 * 更新処理
 	 */
 	public void update(){
-		
 	}
 	
 	/**
 	 * タイマー処理
+	 * 変更の余地あり
 	 */
 	public void timer(){
-		
+		if(mainView.status==Status.personMovin){
+			this.setPositon(new Point(dst.left+1,dst.top+1));
+
+			if(this.dst.bottom >= 600){
+				mainView.status = Status.dialog;
+			}
+		}
 	}
 	
 	/**

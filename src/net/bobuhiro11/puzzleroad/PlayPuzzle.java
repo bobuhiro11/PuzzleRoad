@@ -48,6 +48,7 @@ public class  PlayPuzzle{
 	//一ミリ秒間で移動量
 	private int ani_moving_per_time;
 	
+	private MainView mainView;
 	
 	//スタート，ゴールオブジェクト
 	public Person startObject,goalObject;
@@ -58,8 +59,9 @@ public class  PlayPuzzle{
 	 * @param rect 描画サイズ
 	 * @param n　nマス×nマス
 	 */
-	public PlayPuzzle(Context context,Rect rect,int n){
+	public PlayPuzzle(Context context,MainView mainView,Rect rect,int n){
 		this.context = context;
+		this.mainView = mainView;
 		
 		paint = new Paint();
 		paint.setColor(Color.WHITE);
@@ -251,66 +253,70 @@ public class  PlayPuzzle{
 	}
 
 	public void touch(MotionEvent event){
-		switch (event.getAction()) {
-		case MotionEvent.ACTION_DOWN:
-			oldX = (int) event.getX();
-			oldY = (int) event.getY();
-			break;
-		case MotionEvent.ACTION_MOVE:
-			if(oldX!=-1 && oldY!=-1){
-				int raw = this.checkRaw(oldY, (int)event.getY());
-				int column = this.checkColumn(oldX, (int)event.getX());
-				int dx = (int)event.getX() - oldX;
-				int dy = (int)event.getY() - oldY;
-				if(dx > sensitivity && raw!=-1){
-					//右
-					Log.d("TouchEvent", "right"+raw);
-					oldX=-1;
-					oldY=-1;
-					
-					ani_rawColumn = raw;
-					ani_direction = Direction.right;
-					ani_moving = 0;
-					//puzzle.move(raw+1, Direction.right);
-				}else if(dx < -sensitivity && raw!=-1){
-					//左
-					Log.d("TouchEvent", "left"+raw);
-					oldX=-1;
-					oldY=-1;
-					
-					ani_rawColumn = raw;
-					ani_direction = Direction.left;
-					ani_moving = 0;
-					//puzzle.move(raw+1, Direction.left);
-				}else if(dy > sensitivity && column!=-1){
-					//下
-					Log.d("TouchEvent", "down"+column);
-					oldX=-1;
-					oldY=-1;
-					
-					ani_rawColumn = column;
-					ani_direction = Direction.down;
-					ani_moving = 0;
-					//puzzle.move(column+1, Direction.down);
-				}else if(dy < -sensitivity && column!=-1){
-					//上
-					Log.d("TouchEvent", "up"+column);
-					oldX=-1;
-					oldY=-1;
-					
-					ani_rawColumn = column;
-					ani_direction = Direction.up;
-					ani_moving = 0;
-					//puzzle.move(column+1, Direction.up);
+		//if(status==Status.playing){
+			switch (event.getAction()) {
+			case MotionEvent.ACTION_DOWN:
+				oldX = (int) event.getX();
+				oldY = (int) event.getY();
+				break;
+			case MotionEvent.ACTION_MOVE:
+				if(oldX!=-1 && oldY!=-1){
+					int raw = this.checkRaw(oldY, (int)event.getY());
+					int column = this.checkColumn(oldX, (int)event.getX());
+					int dx = (int)event.getX() - oldX;
+					int dy = (int)event.getY() - oldY;
+					if(dx > sensitivity && raw!=-1){
+						//右
+						Log.d("TouchEvent", "right"+raw);
+						oldX=-1;
+						oldY=-1;
+
+						ani_rawColumn = raw;
+						ani_direction = Direction.right;
+						ani_moving = 0;
+						//puzzle.move(raw+1, Direction.right);
+					}else if(dx < -sensitivity && raw!=-1){
+						//左
+						Log.d("TouchEvent", "left"+raw);
+						oldX=-1;
+						oldY=-1;
+
+						ani_rawColumn = raw;
+						ani_direction = Direction.left;
+						ani_moving = 0;
+						//puzzle.move(raw+1, Direction.left);
+					}else if(dy > sensitivity && column!=-1){
+						//下
+						Log.d("TouchEvent", "down"+column);
+						oldX=-1;
+						oldY=-1;
+
+						ani_rawColumn = column;
+						ani_direction = Direction.down;
+						ani_moving = 0;
+						//puzzle.move(column+1, Direction.down);
+					}else if(dy < -sensitivity && column!=-1){
+						//上
+						Log.d("TouchEvent", "up"+column);
+						oldX=-1;
+						oldY=-1;
+
+						ani_rawColumn = column;
+						ani_direction = Direction.up;
+						ani_moving = 0;
+						//puzzle.move(column+1, Direction.up);
+					}
 				}
+				break;
 			}
-			break;
-		}
+		//}
 
 	}
 
 	//タイマー処理
 	public void timer() {
+		this.startObject.timer();
+		
 		if(ani_moving != -1){
 			ani_moving += ani_moving_per_time;
 			if(ani_moving >= rect.width()/n){
@@ -320,25 +326,12 @@ public class  PlayPuzzle{
 				puzzle.move(ani_rawColumn+1, ani_direction);
 				//パズル完成
 				if(puzzle.isComplete()){
-					//デバッグ
-					ArrayList<Point> a = this.routePosition();
-					//ダイアログ
-					new AlertDialog.Builder(context)
-					.setTitle("Complete!!")
-					.setMessage("")
-					.setPositiveButton("OK", new DialogInterface.OnClickListener(){
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							//パズルを初期化
-							puzzle = new Puzzle(n+2,1);
-							//スタート，ゴールオブジェクト更新
-							startObject.setPoint(puzzle.start);
-							goalObject.setPoint(puzzle.goal);
-						}
-					})
-					.show();
+					//辿るべき道順を指定．
+					startObject.setPositions(this.routePosition());
+					this.mainView.status=Status.personMovin;
 				}
 			}
 		}
+		
 	}
 }
