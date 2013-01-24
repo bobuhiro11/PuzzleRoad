@@ -41,7 +41,7 @@ SurfaceHolder.Callback, Runnable {
 	private Bitmap backGround;
 	
 	//ゴールとスタートのオブジェクト
-	private Person goalObject,startObject;
+	public Person goalObject,startObject;
 	
 	//ゲームのサイズを決定
 	private int n = 4;

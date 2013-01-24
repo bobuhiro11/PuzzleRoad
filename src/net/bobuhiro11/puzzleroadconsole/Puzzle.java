@@ -253,6 +253,7 @@ public class Puzzle {
 			
 				
 		}
+		//debugRoute(a);
 		return a;
 	}
 	
@@ -455,7 +456,7 @@ public class Puzzle {
 	/**
 	 * @param route ルート
 	 */
-	private void debugRoute(int[][] route){
+	public void debugRoute(int[][] route){
 		for(int y=0;y<=max.y-1;y++){
 			for(int x=0;x<=max.x-1;x++){
 				if(route[x][y]==0)

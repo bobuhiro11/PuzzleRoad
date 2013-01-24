@@ -33,6 +33,11 @@ public class Person {
 	ArrayList<Point> positions;
 	
 	/**
+	 * 次に行く座標
+	 */
+	int nextIndex;
+	
+	/**
 	 * 動きのある物体を生成する．
 	 * @param context コンテキスト
 	 * @param point この物体の位置
@@ -83,11 +88,12 @@ public class Person {
 	}
 	
 	/**
-	 * これから辿っていく座標一覧
+	 * これから辿っていく座標一覧を設定
 	 * @param positions　画面上で左上が通るべき実座標
 	 */
 	public void setPositions(ArrayList<Point> positions){
 		this.positions = positions;
+		this.nextIndex = 1;
 	}
 	
 	/**
@@ -98,14 +104,38 @@ public class Person {
 	
 	/**
 	 * タイマー処理
-	 * 変更の余地あり
 	 */
 	public void timer(){
-		if(mainView.status==Status.personMovin){
-			this.setPositon(new Point(dst.left+1,dst.top+1));
-
-			if(this.dst.bottom >= 600){
+		//Log.d("size", positions.toString());
+		//Log.d("nextindex", String.valueOf(nextIndex));
+		
+		if(mainView.status==Status.personMovin && nextIndex < positions.size()){
+			
+			//終了
+			if(this.dst.bottom >= rect.bottom){
 				mainView.status = Status.dialog;
+			}
+			
+			//現在の座標
+			Point now = new Point(dst.left,dst.top);
+			//次の座標
+			Point next = this.positions.get(nextIndex);
+			//移動量
+			Point d  = new Point(next.x - now.x , next.y-now.y);
+			if(d.x!=0)
+				d.x /= d.x;
+			if(d.y!=0)
+				d.y /= d.y;
+			//実際の移動
+			this.setPositon(new Point(now.x+d.x,now.y+d.y));
+			
+			//目標を変更
+			now = new Point(dst.left,dst.top);
+			if(Math.abs(now.x - next.x) < 1 &&
+			   Math.abs(now.y - next.y) < 1){
+				
+				setPositon(next);
+				nextIndex++;
 			}
 		}
 	}
