@@ -106,15 +106,10 @@ public class Person {
 	 * タイマー処理
 	 */
 	public void timer(){
-		//Log.d("size", positions.toString());
-		//Log.d("nextindex", String.valueOf(nextIndex));
 		
-		if(mainView.status==Status.personMovin && nextIndex < positions.size()){
-			
-			//終了
-			if(this.dst.bottom >= rect.bottom){
-				mainView.status = Status.dialog;
-			}
+		if(mainView.status==Status.personMovin){
+			Log.d("size", positions.toString());
+			Log.d("nextindex", String.valueOf(nextIndex));
 			
 			//現在の座標
 			Point now = new Point(dst.left,dst.top);
@@ -123,11 +118,16 @@ public class Person {
 			//移動量
 			Point d  = new Point(next.x - now.x , next.y-now.y);
 			if(d.x!=0)
-				d.x /= d.x;
+				d.x /= Math.abs(d.x);
 			if(d.y!=0)
-				d.y /= d.y;
+				d.y /= Math.abs(d.y);
 			//実際の移動
 			this.setPositon(new Point(now.x+d.x,now.y+d.y));
+			
+			//終了
+			if(this.dst.top >= positions.get(positions.size()-1).y){
+				mainView.status = Status.dialog;
+			}
 			
 			//目標を変更
 			now = new Point(dst.left,dst.top);

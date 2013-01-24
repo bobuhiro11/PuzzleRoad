@@ -113,10 +113,10 @@ public class  PlayPuzzle{
 								rect.top  +cellHeight*(y-1));
 						list.add(p);
 						index++;
-					}
-					if(x==puzzle.goal.x && y==puzzle.goal.y){
-						//ゴールへ到達
-						return list;
+						if(x==puzzle.goal.x && y==puzzle.goal.y){
+							//ゴールへ到達
+							return list;
+						}
 					}
 				}
 			}
