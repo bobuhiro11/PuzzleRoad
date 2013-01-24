@@ -1,5 +1,6 @@
 package net.bobuhiro11.puzzleroad;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import net.bobuhiro11.puzzleroadconsole.*;
@@ -86,6 +87,17 @@ public class  PlayPuzzle{
         b[6] = BitmapFactory.decodeResource(r, R.drawable.b6);
         
         this.ani_moving_per_time = rect.width() / 100;
+	}
+	
+	
+	/**
+	 * パズル完了時に使う．
+	 * スタートからゴールまでの各マスの左上の座標をリストにしたもの．
+	 * @return	座標のリスト
+	 */
+	public ArrayList<Point> routePosition(){
+		ArrayList<Point> list = new ArrayList<Point>();
+		return null;
 	}
 	
 	public void update(){

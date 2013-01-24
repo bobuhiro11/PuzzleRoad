@@ -153,7 +153,6 @@ public class Puzzle {
 	public boolean[][] checkAnswerStart(){
 		return checkAnswer(cells,start,goal);
 	}
-		
 	/**
 	 * @param cells セルの集合
 	 * @param s　スタート地点
@@ -161,15 +160,36 @@ public class Puzzle {
 	 * @return sからgへ正しく道ができているところをt,間違っているところはf
 	 */
 	private boolean[][] checkAnswer(Cell[][] cells,Point s,Point g){
+		
 		boolean[][] a = new boolean[max.x][max.y];
+		int[][] route = this.checkRoute(cells, s, g);
 		for(int x=0;x<max.x;x++)
 			for(int y=0;y<max.y;y++)
-				a[x][y]=false;
+				if(route[x][y]==0)
+					a[x][y] = false;
+				else
+					a[x][y] = true;
+		return a;
+	}
+		
+	/**
+	 * スタートからつながっているルートに順番付けしたもの．
+	 * @param cells セルの集合
+	 * @param s　スタート地点
+	 * @param g　ゴール地点
+	 * @return ルートに1,2と番号をつけたもの．(通らないところは0)
+	 */
+	public int[][] checkRoute(Cell[][] cells,Point s,Point g){
+		int[][] a = new int[max.x][max.y];
+		int i=1;
+		for(int x=0;x<max.x;x++)
+			for(int y=0;y<max.y;y++)
+				a[x][y]=0;
 		
 		//Point p = (Point) s.clone();
 		Point p = new Point(s.x,s.y);
 		while(true){
-			a[p.x][p.y] = true;
+			a[p.x][p.y] = i++;
 			
 			//ゴールへ到達
 			if(p.equals(g)){
@@ -205,25 +225,25 @@ public class Puzzle {
 				}
 			}else if(cells[p.x][p.y].right && 
 					(cells[p.x+1][p.y].left||p.x+1==g.x&&p.y==g.y) && 
-					!a[p.x+1][p.y]
+					a[p.x+1][p.y]==0
 					){
 				//右へ移動する
 				p.x++;
 			}else if(cells[p.x][p.y].left && 
 					(cells[p.x-1][p.y].right||p.x-1==g.x&&p.y==g.y) &&
-					!a[p.x-1][p.y]
+					a[p.x-1][p.y]==0
 					){
 				//左へ移動する
 				p.x--;
 			}else if(cells[p.x][p.y].up && 
 					(cells[p.x][p.y-1].down	||p.x==g.x&&p.y-1==g.y) &&
-					!a[p.x][p.y-1])
+					a[p.x][p.y-1]==0)
 				{
 				//上へ移動する
 				p.y--;
 			}else if(cells[p.x][p.y].down &&
 					(cells[p.x][p.y+1].up||p.x==g.x&&p.y+1==g.y) && 
-					!a[p.x][p.y+1]
+					a[p.x][p.y+1]==0
 					){
 				//下へ移動する
 				p.y++;
@@ -233,9 +253,7 @@ public class Puzzle {
 			
 				
 		}
-		//debugAnswer(a);
 		return a;
-		
 	}
 	
 	/**
@@ -421,6 +439,7 @@ public class Puzzle {
 		}
 	}
 	
+	
 	/**
 	 * @param cells セルの集合
 	 */
@@ -433,7 +452,21 @@ public class Puzzle {
 			System.out.print("\n");
 		}
 	}
-	
+	/**
+	 * @param route ルート
+	 */
+	private void debugRoute(int[][] route){
+		for(int y=0;y<=max.y-1;y++){
+			for(int x=0;x<=max.x-1;x++){
+				if(route[x][y]==0)
+					System.out.print("_");
+				else 
+					System.out.print(route[x][y]);
+					
+			}
+			System.out.print("\n");
+		}
+	}
 	/**
 	 * @param cell セル
 	 */
