@@ -40,7 +40,7 @@ public class Person {
 	// １フレームあたりの移動量
 	int moving_per_frame = 6;
 	
-	//現在,次，差の座標
+	//汎用変数
 	Point now,next,d;
 	
 	/**

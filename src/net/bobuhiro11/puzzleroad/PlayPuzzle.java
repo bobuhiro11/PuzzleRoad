@@ -136,7 +136,7 @@ public class  PlayPuzzle{
 		int w = rect.width()/n;
 		int h = rect.height()/n;
 		Cell[][] cells = puzzle.cells;
-		boolean[][] ans = puzzle.checkAnswerStart();
+		int[][] ans = puzzle.checkRoute(puzzle.cells, puzzle.start, puzzle.goal);
 		
 		//アニメーション(実際はないマスだけどアニメーションには必要)
 		if(ani_moving!=-1){
@@ -146,7 +146,7 @@ public class  PlayPuzzle{
 						rect.top  -h+ani_moving,
 						rect.left +(ani_rawColumn+1)*w,
 						rect.top +ani_moving );
-				if(ans[ani_rawColumn+1][n])
+				if(ans[ani_rawColumn+1][n]!=0)
 					canvas.drawBitmap(a[cells[ani_rawColumn+1][n].toInt()],src, dst, paint);
 				else
 					canvas.drawBitmap(b[cells[ani_rawColumn+1][n].toInt()],src, dst, paint);
@@ -156,7 +156,7 @@ public class  PlayPuzzle{
 						rect.bottom -ani_moving,
 						rect.left + (ani_rawColumn+1)*w,
 						rect.bottom +h -ani_moving );
-				if(ans[ani_rawColumn+1][1])
+				if(ans[ani_rawColumn+1][1]!=0)
 					canvas.drawBitmap(a[cells[ani_rawColumn+1][1].toInt()],src, dst, paint);
 				else
 					canvas.drawBitmap(b[cells[ani_rawColumn+1][1].toInt()],src, dst, paint);
@@ -166,7 +166,7 @@ public class  PlayPuzzle{
 						rect.top + h*ani_rawColumn,
 						rect.left +ani_moving,
 						rect.top + h*(ani_rawColumn+1));
-				if(ans[n][ani_rawColumn+1])
+				if(ans[n][ani_rawColumn+1]!=0)
 					canvas.drawBitmap(a[cells[n][ani_rawColumn+1].toInt()],src, dst, paint);
 				else
 					canvas.drawBitmap(b[cells[n][ani_rawColumn+1].toInt()],src, dst, paint);
@@ -176,7 +176,7 @@ public class  PlayPuzzle{
 						rect.top + ani_rawColumn*h,
 						rect.right+w-ani_moving,
 						rect.top + (ani_rawColumn+1)*h);
-				if(ans[1][ani_rawColumn+1])
+				if(ans[1][ani_rawColumn+1]!=0)
 					canvas.drawBitmap(a[cells[1][ani_rawColumn+1].toInt()],src, dst, paint);
 				else
 					canvas.drawBitmap(b[cells[1][ani_rawColumn+1].toInt()],src, dst, paint);
@@ -210,7 +210,7 @@ public class  PlayPuzzle{
 						dst.left -=ani_moving;
 					}
 				}
-				if(ans[x+1][y+1])
+				if(ans[x+1][y+1]!=0)
 					canvas.drawBitmap(a[cells[x+1][y+1].toInt()],src, dst, paint);
 				else
 					canvas.drawBitmap(b[cells[x+1][y+1].toInt()],src, dst, paint);

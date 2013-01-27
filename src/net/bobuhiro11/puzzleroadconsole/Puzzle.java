@@ -20,21 +20,11 @@ public class Puzzle {
 	// Puzzle(),move()以外からは変更をしない．
 	public Cell[][] cells;
 	
-	/**
-	 * パズルの盤面を作成する．完成することは保証されるが，完成はしていない．
-	 * @param max 盤面の大きさ(一回り大きく)
-	 * @param start 開始点
-	 * @param goal 終了点 
-	 */
-	/*
-	public Puzzle(Point max,Point start,Point goal){
-
-		this.max = max;
-		this.start = start;
-		this.goal = goal;
-		this.cells = this.makeRandomCells(); 
-	}
-	*/
+	private int[][] route;
+	
+	// 汎用変数
+	private Point p;
+	
 	
 	/**
 	 * パズルの盤面を作成する．完成することは保証されるが，完成はしていない．
@@ -44,6 +34,8 @@ public class Puzzle {
 	 */
 	public Puzzle(int max,int mode){
 		this.max = new Point(max,max);
+		this.route = new int[max][max];
+		this.p = new Point();
 		
 		switch(mode){
 		case 1:
@@ -106,11 +98,7 @@ public class Puzzle {
 	 * パズルが出来上がっているかどうか
 	 */
 	public boolean isComplete(){
-		boolean[][] a = checkAnswer(cells,start,goal);
-		boolean r = a[start.x][start.y] && a[goal.x][goal.y];
-		//System.out.print(r);
-		//System.out.print("\n");
-		return r;
+		return this.isComplete(cells);
 	}
 	
 	
@@ -119,58 +107,10 @@ public class Puzzle {
 	 * @param cells セルの集合
 	 */
 	private boolean isComplete(Cell[][] cells){
-		boolean[][] a = checkAnswer(cells,start,goal);
-		boolean r = a[start.x][start.y] && a[goal.x][goal.y];
-		return r;
+		int[][] a = checkRoute(cells,start,goal);
+		return a[start.x][start.y]!=0 && a[goal.x][goal.y]!=0;
 	}
 	
-	/**
-	 * パズルの中で，セルが正しく配置されているところを調べる．
-	 * @param cells セルの集合
-	 * @return 正しく道ができているところをt,間違っているところはf
-	 */
-	public boolean[][] checkAnswer(){
-		//スタートからの探索
-		boolean[][] a = checkAnswer(cells,start,goal);
-		//ゴールからの探索
-		boolean[][] b = checkAnswer(cells,goal,start);
-		boolean[][] c = new boolean[max.x][max.y];
-		
-		for(int x=0;x<max.x;x++)
-			for(int y=0;y<max.y;y++)
-				c[x][y] = (a[x][y]||b[x][y]);
-		//debugAnswer(a);
-		//debugAnswer(b);
-		//debugAnswer(c);
-		return c;
-	}
-	
-	/**
-	 * パズルの中で，セルが正しく配置されているところを調べる．ただし，先頭からのみ調べる
-	 * @param cells セルの集合
-	 * @return 正しく道ができているところをt,間違っているところはf
-	 */
-	public boolean[][] checkAnswerStart(){
-		return checkAnswer(cells,start,goal);
-	}
-	/**
-	 * @param cells セルの集合
-	 * @param s　スタート地点
-	 * @param g　ゴール地点
-	 * @return sからgへ正しく道ができているところをt,間違っているところはf
-	 */
-	private boolean[][] checkAnswer(Cell[][] cells,Point s,Point g){
-		
-		boolean[][] a = new boolean[max.x][max.y];
-		int[][] route = this.checkRoute(cells, s, g);
-		for(int x=0;x<max.x;x++)
-			for(int y=0;y<max.y;y++)
-				if(route[x][y]==0)
-					a[x][y] = false;
-				else
-					a[x][y] = true;
-		return a;
-	}
 		
 	/**
 	 * スタートからつながっているルートに順番付けしたもの．
@@ -180,16 +120,14 @@ public class Puzzle {
 	 * @return ルートに1,2と番号をつけたもの．(通らないところは0)
 	 */
 	public int[][] checkRoute(Cell[][] cells,Point s,Point g){
-		int[][] a = new int[max.x][max.y];
 		int i=1;
 		for(int x=0;x<max.x;x++)
 			for(int y=0;y<max.y;y++)
-				a[x][y]=0;
+				route[x][y]=0;
 		
-		//Point p = (Point) s.clone();
-		Point p = new Point(s.x,s.y);
+		p.set(s.x, s.y);
 		while(true){
-			a[p.x][p.y] = i++;
+			route[p.x][p.y] = i++;
 			
 			//ゴールへ到達
 			if(p.equals(g)){
@@ -225,25 +163,25 @@ public class Puzzle {
 				}
 			}else if(cells[p.x][p.y].right && 
 					(cells[p.x+1][p.y].left||p.x+1==g.x&&p.y==g.y) && 
-					a[p.x+1][p.y]==0
+					route[p.x+1][p.y]==0
 					){
 				//右へ移動する
 				p.x++;
 			}else if(cells[p.x][p.y].left && 
 					(cells[p.x-1][p.y].right||p.x-1==g.x&&p.y==g.y) &&
-					a[p.x-1][p.y]==0
+					route[p.x-1][p.y]==0
 					){
 				//左へ移動する
 				p.x--;
 			}else if(cells[p.x][p.y].up && 
 					(cells[p.x][p.y-1].down	||p.x==g.x&&p.y-1==g.y) &&
-					a[p.x][p.y-1]==0)
+					route[p.x][p.y-1]==0)
 				{
 				//上へ移動する
 				p.y--;
 			}else if(cells[p.x][p.y].down &&
 					(cells[p.x][p.y+1].up||p.x==g.x&&p.y+1==g.y) && 
-					a[p.x][p.y+1]==0
+					route[p.x][p.y+1]==0
 					){
 				//下へ移動する
 				p.y++;
@@ -254,7 +192,7 @@ public class Puzzle {
 				
 		}
 		//debugRoute(a);
-		return a;
+		return route;
 	}
 	
 	/**

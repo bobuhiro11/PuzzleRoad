@@ -40,13 +40,14 @@ SurfaceHolder.Callback, Runnable {
 	private Context context;
 	
 	//FPSカウンター
-	Fps fps;
+	//Fps fps;
 	
 	//パズル本体
 	public PlayPuzzle playPuzzle;
 	
 	//背景画像
 	private Bitmap backGround;
+	private Rect backGroundSrc,backGroundDst;
 	
 	//ゴールとスタートのオブジェクト
 	public Person goalObject,startObject;
@@ -64,13 +65,15 @@ SurfaceHolder.Callback, Runnable {
 		
 		this.context = context;
 		
-		fps = new Fps();
+		//fps = new Fps();
 		
 		//画面サイズ取得
 		WindowManager wm = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
 		Display disp = wm.getDefaultDisplay();
 		int w = disp.getWidth();
 		int h = disp.getHeight();
+		this.backGroundSrc = new Rect(0,0,700,1200);
+		this.backGroundDst = new Rect(0,0,w,h);
 		
 		
         //パズル部の生成
@@ -109,7 +112,7 @@ SurfaceHolder.Callback, Runnable {
 
 	//更新処理
 	private void update(){
-		fps.update();
+		//fps.update();
 		if(status==Status.playing){
 			playPuzzle.update();
 		}else if(status==Status.personMovin){
@@ -194,10 +197,10 @@ SurfaceHolder.Callback, Runnable {
 			return;
 		}
 		playPuzzle.draw(canvas);
-		canvas.drawBitmap(backGround, new Rect(0,0,700,1200), new Rect(0,0,canvas.getWidth(),canvas.getHeight()), null);
+		canvas.drawBitmap(backGround,this.backGroundSrc,this.backGroundDst, null);
 		goalObject.draw(canvas);
 		startObject.draw(canvas);
-		fps.onDraw(canvas);
+		//fps.onDraw(canvas);
 	}
 
 	// タッチイベント
