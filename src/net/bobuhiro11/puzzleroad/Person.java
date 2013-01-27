@@ -40,6 +40,9 @@ public class Person {
 	// １フレームあたりの移動量
 	int moving_per_frame = 6;
 	
+	//現在,次，差の座標
+	Point now,next,d;
+	
 	/**
 	 * 動きのある物体を生成する．
 	 * @param context コンテキスト
@@ -52,9 +55,14 @@ public class Person {
 		this.mainView = mainView;
 		this.context = context;
 		this.src = new Rect(0,0,140,140);
+		this.dst = new Rect();
 		this.paint = new Paint(Color.WHITE);
 		this.rect = rect;
 		this.n  = n;
+		
+		this.now = new Point();
+		this.next = new Point();
+		this.d = new Point();
 		
 		Resources r = context.getResources();
         bmp = BitmapFactory.decodeResource(r, id);
@@ -69,7 +77,7 @@ public class Person {
 	public void setPoint(Point point){
         int cellWidth  = (rect.right - rect.left) /n;
         int cellHeight = (rect.bottom - rect.top) /n;
-        dst = new Rect(
+        dst.set(
         		rect.left + cellWidth * (point.x-1),
         		rect.top + cellHeight * (point.y-1),
         		rect.left + cellWidth * point.x,
@@ -83,7 +91,7 @@ public class Person {
 	public void setPositon(Point point){
         int cellWidth  = (rect.right - rect.left) /n;
         int cellHeight = (rect.bottom - rect.top) /n;
-        dst = new Rect(
+        dst.set(
         		point.x,
         		point.y,
         		point.x + cellWidth,
@@ -109,11 +117,11 @@ public class Person {
 			Log.d("nextindex", String.valueOf(nextIndex));
 			
 			//現在の座標
-			Point now = new Point(dst.left,dst.top);
+			now.set(dst.left,dst.top);
 			//次の座標
-			Point next = this.positions.get(nextIndex);
+			next = this.positions.get(nextIndex);
 			//移動量
-			Point d  = new Point(next.x - now.x , next.y-now.y);
+			d.set(next.x - now.x , next.y-now.y);
 			if(d.x!=0){
 				d.x /= Math.abs(d.x);
 				d.x *= this.moving_per_frame;
@@ -123,17 +131,12 @@ public class Person {
 				d.y *= this.moving_per_frame;
 			}
 			//実際の移動
-			this.setPositon(new Point(now.x+d.x,now.y+d.y));
-			
-			//終了
-			/*
-			if(this.dst.top >= positions.get(positions.size()-1).y - moving_per_frame){
-				mainView.status = Status.dialog;
-			}
-			*/
+			now.set(now.x+d.x, now.y+d.y);
+			//this.setPositon(new Point(now.x+d.x,now.y+d.y));
+			this.setPositon(now);
 			
 			//目標を変更
-			now = new Point(dst.left,dst.top);
+			//now.set(dst.left,dst.top);
 			if(Math.abs(now.x - next.x) < moving_per_frame &&
 			   Math.abs(now.y - next.y) < moving_per_frame){
 				

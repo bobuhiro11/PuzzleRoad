@@ -33,10 +33,14 @@ public class  PlayPuzzle{
 	private Bitmap[] a;
 	private Bitmap[] b;
 	
-	//描画領域
+	//描画領域(パズル全体)
 	public Rect rect;
 	//n×nマス
 	private int n;
+	
+	//各マスの領域（汎用的に使う）
+	private Rect src,dst;
+	
 	
 	//**移動アニメーション
 	//移動する列，行
@@ -69,6 +73,9 @@ public class  PlayPuzzle{
 		puzzle = new Puzzle(n+2,1);
 		this.rect = rect;
 		this.n = n;
+		
+		this.src = new Rect(0,0,140,140);
+		this.dst = new Rect();
 		
 		Resources r = context.getResources();
 		a = new Bitmap[7];
@@ -128,14 +135,13 @@ public class  PlayPuzzle{
 		
 		int w = rect.width()/n;
 		int h = rect.height()/n;
-		Rect src = new Rect(0,0,140,140);
 		Cell[][] cells = puzzle.cells;
 		boolean[][] ans = puzzle.checkAnswerStart();
 		
 		//アニメーション(実際はないマスだけどアニメーションには必要)
 		if(ani_moving!=-1){
 			if(ani_direction==Direction.down){
-				Rect dst = new Rect(
+				dst.set(
 						rect.left +ani_rawColumn*w,
 						rect.top  -h+ani_moving,
 						rect.left +(ani_rawColumn+1)*w,
@@ -145,7 +151,7 @@ public class  PlayPuzzle{
 				else
 					canvas.drawBitmap(b[cells[ani_rawColumn+1][n].toInt()],src, dst, paint);
 			}else if(ani_direction==Direction.up){
-				Rect dst = new Rect(
+				dst.set(
 						rect.left + ani_rawColumn*w,
 						rect.bottom -ani_moving,
 						rect.left + (ani_rawColumn+1)*w,
@@ -155,7 +161,7 @@ public class  PlayPuzzle{
 				else
 					canvas.drawBitmap(b[cells[ani_rawColumn+1][1].toInt()],src, dst, paint);
 			}else if(ani_direction==Direction.right){
-				Rect dst = new Rect(
+				dst.set(
 						rect.left-w+ani_moving,
 						rect.top + h*ani_rawColumn,
 						rect.left +ani_moving,
@@ -165,7 +171,7 @@ public class  PlayPuzzle{
 				else
 					canvas.drawBitmap(b[cells[n][ani_rawColumn+1].toInt()],src, dst, paint);
 			}else if(ani_direction==Direction.left){
-				Rect dst = new Rect(
+				dst.set(
 						rect.right -ani_moving,
 						rect.top + ani_rawColumn*h,
 						rect.right+w-ani_moving,
@@ -180,7 +186,7 @@ public class  PlayPuzzle{
 		for(int x=0;x<n;x++){
 			for(int y=0;y<n;y++){
 				
-				Rect dst = new Rect(
+				dst.set(
 						rect.left + w*x,
 						rect.top  + h*y,
 						rect.left + w*(x+1),
