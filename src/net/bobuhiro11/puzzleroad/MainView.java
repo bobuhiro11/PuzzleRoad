@@ -34,6 +34,9 @@ SurfaceHolder.Callback, Runnable {
 	private Handler handler = new Handler();
 	private Context context;
 	
+	//FPSカウンター
+	Fps fps;
+	
 	//パズル本体
 	public PlayPuzzle playPuzzle;
 	
@@ -55,6 +58,8 @@ SurfaceHolder.Callback, Runnable {
 		super(context);
 		
 		this.context = context;
+		
+		fps = new Fps();
 		
 		//画面サイズ取得
 		WindowManager wm = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
@@ -147,6 +152,7 @@ SurfaceHolder.Callback, Runnable {
 	public void run() {
 		while (thread != null) {
 			// 更新処理
+			fps.update();
 			if(status==Status.playing){
 				playPuzzle.update();
 			}else if(status==Status.personMovin){
@@ -171,6 +177,7 @@ SurfaceHolder.Callback, Runnable {
 		canvas.drawBitmap(backGround, new Rect(0,0,700,1200), new Rect(0,0,canvas.getWidth(),canvas.getHeight()), null);
 		goalObject.draw(canvas);
 		startObject.draw(canvas);
+		fps.onDraw(canvas);
 	}
 
 	// タッチイベント
