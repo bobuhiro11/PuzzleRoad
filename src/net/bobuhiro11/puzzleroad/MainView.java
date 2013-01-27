@@ -29,6 +29,11 @@ SurfaceHolder.Callback, Runnable {
 
 	private SurfaceHolder holder;
 	private Thread thread;
+	//SurfaceViewのfps
+	static final long FPS = 20;
+	static final long FRAME_TIME = 1000 / FPS;
+	
+	//Timerイベントの感覚
 	private long interval = 1;
 	private Runnable runnable;
 	private Handler handler = new Handler();
@@ -102,13 +107,19 @@ SurfaceHolder.Callback, Runnable {
 		handler.postDelayed(runnable, interval);
 	}
 
+	//更新処理
+	private void update(){
+		fps.update();
+		if(status==Status.playing){
+			playPuzzle.update();
+		}else if(status==Status.personMovin){
+			startObject.update();
+		}
+	}
+	
 	//タイマーイベント(intervalごとに呼ばれる．)
 	private void TimerEvent() {
-		if(status==Status.playing){
-			playPuzzle.timer();
-		}else if(status==Status.personMovin){
-			this.startObject.timer();
-		}else if(status==Status.dialog){
+		if(status==Status.dialog){
 			status = Status.playing;
 			new AlertDialog.Builder(context)
 			.setTitle("Complete!!")
@@ -125,7 +136,6 @@ SurfaceHolder.Callback, Runnable {
 			})
 			.show();
 		}
-		
 	}
 
 	// SurfaceView生成時に呼び出される
@@ -150,21 +160,31 @@ SurfaceHolder.Callback, Runnable {
 
 	// スレッドによるSurfaceView更新処理
 	public void run() {
+		long loopCount = 0;
+		long waitTime = 0;
+		long startTime = System.currentTimeMillis();
+
 		while (thread != null) {
-			// 更新処理
-			fps.update();
-			if(status==Status.playing){
-				playPuzzle.update();
-			}else if(status==Status.personMovin){
-				startObject.update();
-			}else if(status==Status.dialog){
-			}
-			// 描画処理
-			Canvas canvas = holder.lockCanvas();
-			this.draw(canvas);
-			holder.unlockCanvasAndPost(canvas);
-			
+			try{
+				// 更新処理
+				update();
+				// 描画処理
+				Canvas canvas = holder.lockCanvas();
+				this.draw(canvas);
+				holder.unlockCanvasAndPost(canvas);
+
+				// FPSを制限する．
+				// http://android.keicode.com/basics/surfaceview-1.phpより
+				loopCount++;
+				waitTime = (loopCount * FRAME_TIME) 
+						- System.currentTimeMillis() - startTime;
+				if( waitTime > 0 ){
+					Thread.sleep(waitTime);
+				}	
+			}catch(Exception e){}
+
 		}
+
 	}
 
 	// 描画処理

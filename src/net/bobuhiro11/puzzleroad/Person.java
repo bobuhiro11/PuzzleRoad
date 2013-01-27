@@ -37,6 +37,9 @@ public class Person {
 	 */
 	int nextIndex;
 	
+	// １フレームあたりの移動量
+	int moving_per_frame = 6;
+	
 	/**
 	 * 動きのある物体を生成する．
 	 * @param context コンテキスト
@@ -100,12 +103,6 @@ public class Person {
 	 * 更新処理
 	 */
 	public void update(){
-	}
-	
-	/**
-	 * タイマー処理
-	 */
-	public void timer(){
 		
 		if(mainView.status==Status.personMovin){
 			Log.d("size", positions.toString());
@@ -117,25 +114,36 @@ public class Person {
 			Point next = this.positions.get(nextIndex);
 			//移動量
 			Point d  = new Point(next.x - now.x , next.y-now.y);
-			if(d.x!=0)
+			if(d.x!=0){
 				d.x /= Math.abs(d.x);
-			if(d.y!=0)
+				d.x *= this.moving_per_frame;
+			}
+			if(d.y!=0){
 				d.y /= Math.abs(d.y);
+				d.y *= this.moving_per_frame;
+			}
 			//実際の移動
 			this.setPositon(new Point(now.x+d.x,now.y+d.y));
 			
 			//終了
-			if(this.dst.top >= positions.get(positions.size()-1).y){
+			/*
+			if(this.dst.top >= positions.get(positions.size()-1).y - moving_per_frame){
 				mainView.status = Status.dialog;
 			}
+			*/
 			
 			//目標を変更
 			now = new Point(dst.left,dst.top);
-			if(Math.abs(now.x - next.x) < 1 &&
-			   Math.abs(now.y - next.y) < 1){
+			if(Math.abs(now.x - next.x) < moving_per_frame &&
+			   Math.abs(now.y - next.y) < moving_per_frame){
 				
 				setPositon(next);
 				nextIndex++;
+			}
+			
+			//終了
+			if(nextIndex == positions.size()){
+				mainView.status = Status.dialog;
 			}
 		}
 	}
