@@ -95,7 +95,7 @@ public class  PlayPuzzle{
         b[5] = BitmapFactory.decodeResource(r, R.drawable.b5);
         b[6] = BitmapFactory.decodeResource(r, R.drawable.b6);
         
-        this.ani_moving_per_frame = rect.width() / 30;
+        this.ani_moving_per_frame = rect.width() / 15;
 	}
 	
 	

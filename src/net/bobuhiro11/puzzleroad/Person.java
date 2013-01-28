@@ -38,7 +38,7 @@ public class Person {
 	int nextIndex;
 	
 	// １フレームあたりの移動量
-	int moving_per_frame = 6;
+	int moving_per_frame = 12;
 	
 	//汎用変数
 	Point now,next,d;
