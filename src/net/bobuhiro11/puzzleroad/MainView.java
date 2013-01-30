@@ -114,31 +114,43 @@ SurfaceHolder.Callback, Runnable {
 	private void update(){
 		fps.update();
 		if(status==Status.playing){
+			//パズル中
 			playPuzzle.update();
 		}else if(status==Status.personMovin){
+			//パズル後のアニメーション中
 			startObject.update();
+		}else if(status==Status.dialog){
+			//メッセージ出力中
+			status = Status.playing;
+			showDialog("congratulation!!");
 		}
+	}
+	
+	//別スレッドからダイアログ出力する．
+	private void showDialog(final String msg){
+			handler.post(new Runnable() {
+				@Override
+				public void run() {
+					new AlertDialog.Builder(context)
+					.setTitle(msg)
+					.setMessage("")
+					.setPositiveButton("OK", new DialogInterface.OnClickListener(){
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							//パズルを初期化
+							playPuzzle.puzzle = new Puzzle(n+2,1);
+							//スタート，ゴールオブジェクト更新
+							startObject.setPoint(playPuzzle.puzzle.start);
+							goalObject.setPoint(playPuzzle.puzzle.goal);
+						}
+					})
+					.show();
+				}
+			});
 	}
 	
 	//タイマーイベント(intervalごとに呼ばれる．)
 	private void TimerEvent() {
-		if(status==Status.dialog){
-			status = Status.playing;
-			new AlertDialog.Builder(context)
-			.setTitle("Complete!!")
-			.setMessage("")
-			.setPositiveButton("OK", new DialogInterface.OnClickListener(){
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					//パズルを初期化
-					playPuzzle.puzzle = new Puzzle(n+2,1);
-					//スタート，ゴールオブジェクト更新
-					startObject.setPoint(playPuzzle.puzzle.start);
-					goalObject.setPoint(playPuzzle.puzzle.goal);
-				}
-			})
-			.show();
-		}
 	}
 
 	// SurfaceView生成時に呼び出される
