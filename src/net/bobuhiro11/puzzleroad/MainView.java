@@ -52,6 +52,9 @@ SurfaceHolder.Callback, Runnable {
 	//ゴールとスタートのオブジェクト
 	public Person goalObject,startObject;
 	
+	//ダイアログ
+	private Dialog dialog;
+	
 	//ゲームのサイズを決定
 	private int n = 4;
 	
@@ -92,6 +95,8 @@ SurfaceHolder.Callback, Runnable {
         playPuzzle.startObject = startObject;
         playPuzzle.goalObject = goalObject;
         
+        //ダイアログ生成
+        dialog = new Dialog(context,this,w,h);
 		
 		Resources r = context.getResources();
         backGround = BitmapFactory.decodeResource(r, R.drawable.background_game);
@@ -119,34 +124,7 @@ SurfaceHolder.Callback, Runnable {
 		}else if(status==Status.personMovin){
 			//パズル後のアニメーション中
 			startObject.update();
-		}else if(status==Status.dialog){
-			//メッセージ出力中
-			status = Status.playing;
-			showDialog("congratulation!!");
 		}
-	}
-	
-	//別スレッドからダイアログ出力する．
-	private void showDialog(final String msg){
-			handler.post(new Runnable() {
-				@Override
-				public void run() {
-					new AlertDialog.Builder(context)
-					.setTitle(msg)
-					.setMessage("")
-					.setPositiveButton("OK", new DialogInterface.OnClickListener(){
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							//パズルを初期化
-							playPuzzle.puzzle = new Puzzle(n+2,1);
-							//スタート，ゴールオブジェクト更新
-							startObject.setPoint(playPuzzle.puzzle.start);
-							goalObject.setPoint(playPuzzle.puzzle.goal);
-						}
-					})
-					.show();
-				}
-			});
 	}
 	
 	//タイマーイベント(intervalごとに呼ばれる．)
@@ -213,12 +191,17 @@ SurfaceHolder.Callback, Runnable {
 		goalObject.draw(canvas);
 		startObject.draw(canvas);
 		fps.onDraw(canvas);
+		if(status==Status.dialog){
+			dialog.draw(canvas);
+		}
 	}
 
 	// タッチイベント
 	public boolean onTouchEvent(MotionEvent event) {
 		if(status==Status.playing){
 			playPuzzle.touch(event);
+		}else if(status==Status.dialog){
+			dialog.touch(event,n);
 		}
 		return true;
 	}
