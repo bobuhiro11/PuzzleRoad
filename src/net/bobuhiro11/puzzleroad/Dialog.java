@@ -38,7 +38,7 @@ public class Dialog {
 			this.mainView.status = Status.playing;
 			
 			//パズルを初期化
-			mainView.playPuzzle.puzzle = new Puzzle(n+2,1);
+			mainView.playPuzzle.puzzle.init(n+2,1);
 			//スタート，ゴールオブジェクト更新
 			mainView.startObject.setPoint(mainView.playPuzzle.puzzle.start);
 			mainView.goalObject.setPoint(mainView.playPuzzle.puzzle.goal);

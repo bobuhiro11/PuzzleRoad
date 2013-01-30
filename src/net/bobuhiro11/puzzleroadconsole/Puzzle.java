@@ -33,23 +33,37 @@ public class Puzzle {
 	 * 1:スタートと，ゴールの位置を上下から自動で決定する．
 	 */
 	public Puzzle(int max,int mode){
-		this.max = new Point(max,max);
+		this.max = new Point();
 		this.route = new int[max][max];
 		this.p = new Point();
+		this.start = new Point();
+		this.goal = new Point();
+		
+		this.init(max, mode);
+	}
+	
+	/**
+	 * 二度目以降パズルの初期化には，こっちを使う．
+	 * パズルの盤面を作成する．完成することは保証されるが，完成はしていない．
+	 * @param max  盤面の大きさ（一回り大きく）
+	 * @param mode どのモードで盤面を作るのか．
+	 * 1:スタートと，ゴールの位置を上下から自動で決定する．
+	 */
+	public void init(int max,int mode){
+		this.max.set(max, max);
 		
 		switch(mode){
 		case 1:
 			int n = max-2;
 			Random rand = new Random();
-			start = new Point(rand.nextInt(n)+1,0);
-			goal = new Point(rand.nextInt(n)+1,n+1);
+			start.set(rand.nextInt(n)+1,0);
+			goal.set(rand.nextInt(n)+1,n+1);
 			cells = this.makeRandomCells();
 			break;
 		}
 		
 		Log.d("start", start.toString());
 		Log.d("goal", goal.toString());
-		
 	}
 	
 	/**
