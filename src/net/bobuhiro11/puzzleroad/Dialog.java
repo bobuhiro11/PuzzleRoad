@@ -20,7 +20,7 @@ public class Dialog {
 	public Dialog(Context context,MainView mainView,int w,int h){
 		this.mainView = mainView;
 		this.src = new Rect(0,0,400,200);
-		this.dst = new Rect(w/4,h/3,w*3/4,0);
+		this.dst = new Rect(w/8,h/3,w*7/8,0);
 		this.dst.bottom = this.dst.top + this.dst.width()/2;
 		
 		Resources r = context.getResources();

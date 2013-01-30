@@ -2,6 +2,7 @@
 
 
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import net.bobuhiro11.puzzleroadconsole.Puzzle;
 
@@ -26,12 +27,9 @@ import android.view.WindowManager;
 
 public class MainView extends SurfaceView implements
 SurfaceHolder.Callback, Runnable {
-
+	
 	private SurfaceHolder holder;
 	private Thread thread;
-	//SurfaceViewのfps
-	static final long FPS = 20;
-	static final long FRAME_TIME = 1000 / FPS;
 	
 	//Timerイベントの感覚
 	private long interval = 1;
@@ -39,8 +37,8 @@ SurfaceHolder.Callback, Runnable {
 	private Handler handler = new Handler();
 	private Context context;
 	
-	//FPSカウンター
-	Fps fps;
+	//FPS固定装置
+	FPSManager fPSManager;
 	
 	//パズル本体
 	public PlayPuzzle playPuzzle;
@@ -68,7 +66,7 @@ SurfaceHolder.Callback, Runnable {
 		
 		this.context = context;
 		
-		fps = new Fps();
+		fPSManager = new FPSManager(20);
 		
 		//画面サイズ取得
 		WindowManager wm = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
@@ -117,7 +115,6 @@ SurfaceHolder.Callback, Runnable {
 
 	//更新処理
 	private void update(){
-		fps.update();
 		if(status==Status.playing){
 			//パズル中
 			playPuzzle.update();
@@ -153,29 +150,21 @@ SurfaceHolder.Callback, Runnable {
 
 	// スレッドによるSurfaceView更新処理
 	public void run() {
-		long loopCount = 0;
-		long waitTime = 0;
-		long startTime = System.currentTimeMillis();
 
 		while (thread != null) {
-			try{
-				// 更新処理
-				update();
-				// 描画処理
-				Canvas canvas = holder.lockCanvas();
-				this.draw(canvas);
-				holder.unlockCanvasAndPost(canvas);
-
-				// FPSを制限する．
-				// http://android.keicode.com/basics/surfaceview-1.phpより
-				loopCount++;
-				waitTime = (loopCount * FRAME_TIME) 
-						- System.currentTimeMillis() - startTime;
-				if( waitTime > 0 ){
-					Thread.sleep(waitTime);
-				}	
-			}catch(Exception e){}
-
+			// 更新処理
+			update();
+			// 描画処理
+			Canvas canvas = holder.lockCanvas();
+			this.draw(canvas);
+			holder.unlockCanvasAndPost(canvas);
+			//FPS固定
+			try {
+				TimeUnit.NANOSECONDS.sleep(fPSManager.state());
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 	}
@@ -190,10 +179,10 @@ SurfaceHolder.Callback, Runnable {
 		canvas.drawBitmap(backGround,this.backGroundSrc,this.backGroundDst, null);
 		goalObject.draw(canvas);
 		startObject.draw(canvas);
-		fps.onDraw(canvas);
 		if(status==Status.dialog){
 			dialog.draw(canvas);
 		}
+		fPSManager.draw(canvas);
 	}
 
 	// タッチイベント
