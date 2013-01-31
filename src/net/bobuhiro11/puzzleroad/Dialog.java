@@ -19,18 +19,17 @@ public class Dialog {
 	
 	public Dialog(Context context,MainView mainView,int w,int h){
 		this.mainView = mainView;
-		this.src = new Rect(0,0,400,200);
-		this.dst = new Rect(w/8,h/3,w*7/8,0);
-		this.dst.bottom = this.dst.top + this.dst.width()/2;
+		this.src = new Rect(0,0,700,1200);
+		this.dst = new Rect(0,0,w,h);
 		
 		Resources r = context.getResources();
-        bmp = BitmapFactory.decodeResource(r, R.drawable.complete);
+        bmp = BitmapFactory.decodeResource(r, R.drawable.complete_back);
 	}
 	
 	public void draw(Canvas canvas){
 		canvas.drawBitmap(bmp, src, dst, null);
 	}
-	
+
 	/**
 	 * @param event
 	 * @param n　盤面の大きさ

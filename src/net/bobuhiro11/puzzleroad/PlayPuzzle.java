@@ -78,6 +78,7 @@ public class  PlayPuzzle{
 		this.dst = new Rect();
 		
 		Resources r = context.getResources();
+		
 		a = new Bitmap[7];
         a[0] = BitmapFactory.decodeResource(r, R.drawable.a0);
         a[1] = BitmapFactory.decodeResource(r, R.drawable.a1);

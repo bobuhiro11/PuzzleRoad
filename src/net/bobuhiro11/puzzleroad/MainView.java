@@ -76,6 +76,9 @@ SurfaceHolder.Callback, Runnable {
 		this.backGroundSrc = new Rect(0,0,700,1200);
 		this.backGroundDst = new Rect(0,0,w,h);
 		
+        //ダイアログ生成
+        dialog = new Dialog(context,this,w,h);
+		
 		
         //パズル部の生成
 		playPuzzle = new PlayPuzzle(
@@ -93,8 +96,6 @@ SurfaceHolder.Callback, Runnable {
         playPuzzle.startObject = startObject;
         playPuzzle.goalObject = goalObject;
         
-        //ダイアログ生成
-        dialog = new Dialog(context,this,w,h);
 		
 		Resources r = context.getResources();
         backGround = BitmapFactory.decodeResource(r, R.drawable.background_game);
