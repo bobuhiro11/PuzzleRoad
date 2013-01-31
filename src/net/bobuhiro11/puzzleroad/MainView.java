@@ -43,7 +43,7 @@ SurfaceHolder.Callback, Runnable {
 	//パズル本体
 	public PlayPuzzle playPuzzle;
 	
-	//背景画像
+	//ゲーム中の背景画像
 	private Bitmap backGround;
 	private Rect backGroundSrc,backGroundDst;
 	
@@ -52,6 +52,9 @@ SurfaceHolder.Callback, Runnable {
 	
 	//ダイアログ
 	private Dialog dialog;
+	
+	//タイトル
+	private Bitmap title;
 	
 	//ゲームのサイズを決定
 	private final int n = 4;
@@ -85,7 +88,6 @@ SurfaceHolder.Callback, Runnable {
         //ダイアログ生成
         dialog = new Dialog(context,this,w,h);
 		
-		
         //パズル部の生成
 		playPuzzle = new PlayPuzzle(
 				context,this,
@@ -102,11 +104,14 @@ SurfaceHolder.Callback, Runnable {
         playPuzzle.startObject = startObject;
         playPuzzle.goalObject = goalObject;
         
-		
+        //背景
 		Resources r = context.getResources();
         backGround = BitmapFactory.decodeResource(r, R.drawable.background_game);
-        
-        status=Status.playing;
+		
+        //タイトル
+        title = BitmapFactory.decodeResource(r, R.drawable.title);
+        	
+        status=Status.title;
 
 		// getHolder()メソッドでSurfaceHolderを取得。さらにコールバックを登録
 		getHolder().addCallback(this);
@@ -182,6 +187,11 @@ SurfaceHolder.Callback, Runnable {
 		if(canvas==null){
 			return;
 		}
+		if(status==Status.title){
+			canvas.drawBitmap(title, this.backGroundSrc, this.backGroundDst, null);
+			return;
+		}
+
 		playPuzzle.draw(canvas);
 		canvas.drawBitmap(backGround,this.backGroundSrc,this.backGroundDst, null);
 		goalObject.draw(canvas);
@@ -199,6 +209,8 @@ SurfaceHolder.Callback, Runnable {
 			playPuzzle.touch(event);
 		}else if(status==Status.dialog){
 			dialog.touch(event,n);
+		}else if(status==Status.title){
+			this.status = Status.playing;
 		}
 		return true;
 	}

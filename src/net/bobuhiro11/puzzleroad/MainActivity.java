@@ -38,12 +38,13 @@ public class MainActivity extends Activity {
 	}
 
 	@Override
-		protected void onResume() {
+	protected void onResume() {
+		//ゲームカウントを読み込む．
 		this.mainView.gameCount.read();
 		Log.d("", "read");
 		super.onResume();
 	}
-	
+
 	@Override
 	protected void onPause() {
 		//ゲームカウントを書き込む．
@@ -51,6 +52,13 @@ public class MainActivity extends Activity {
 		Log.d("", "save");
 
 		super.onPause();
+		finish();
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		System.exit(0);
 	}
 
 	

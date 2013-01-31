@@ -5,6 +5,10 @@ package net.bobuhiro11.puzzleroad;
  */
 public enum Status {
 	/**
+	 * タイトル画面
+	 */
+	title,
+	/**
 	 * ゲームのプレイ中
 	 */
 	playing,
