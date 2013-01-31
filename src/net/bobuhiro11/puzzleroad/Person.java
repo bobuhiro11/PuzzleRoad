@@ -113,8 +113,8 @@ public class Person {
 	public void update(){
 		
 		if(mainView.status==Status.personMovin){
-			Log.d("size", positions.toString());
-			Log.d("nextindex", String.valueOf(nextIndex));
+			//Log.d("size", positions.toString());
+			//Log.d("nextindex", String.valueOf(nextIndex));
 			
 			//現在の座標
 			now.set(dst.left,dst.top);

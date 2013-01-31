@@ -269,7 +269,7 @@ public class  PlayPuzzle{
 					int dy = (int)event.getY() - oldY;
 					if(dx > sensitivity && raw!=-1){
 						//右
-						Log.d("TouchEvent", "right"+raw);
+						//Log.d("TouchEvent", "right"+raw);
 						oldX=-1;
 						oldY=-1;
 
@@ -279,7 +279,7 @@ public class  PlayPuzzle{
 						//puzzle.move(raw+1, Direction.right);
 					}else if(dx < -sensitivity && raw!=-1){
 						//左
-						Log.d("TouchEvent", "left"+raw);
+						//Log.d("TouchEvent", "left"+raw);
 						oldX=-1;
 						oldY=-1;
 
@@ -289,7 +289,7 @@ public class  PlayPuzzle{
 						//puzzle.move(raw+1, Direction.left);
 					}else if(dy > sensitivity && column!=-1){
 						//下
-						Log.d("TouchEvent", "down"+column);
+						//Log.d("TouchEvent", "down"+column);
 						oldX=-1;
 						oldY=-1;
 
@@ -299,7 +299,7 @@ public class  PlayPuzzle{
 						//puzzle.move(column+1, Direction.down);
 					}else if(dy < -sensitivity && column!=-1){
 						//上
-						Log.d("TouchEvent", "up"+column);
+						//Log.d("TouchEvent", "up"+column);
 						oldX=-1;
 						oldY=-1;
 

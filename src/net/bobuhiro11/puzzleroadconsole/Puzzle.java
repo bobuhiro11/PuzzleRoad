@@ -62,8 +62,8 @@ public class Puzzle {
 			break;
 		}
 		
-		Log.d("start", start.toString());
-		Log.d("goal", goal.toString());
+		//Log.d("start", start.toString());
+		//Log.d("goal", goal.toString());
 	}
 	
 	/**
@@ -245,7 +245,7 @@ public class Puzzle {
 			
 		}
 		
-		debugCells(cells);
+		//debugCells(cells);
 		return cells;
 	}
 
