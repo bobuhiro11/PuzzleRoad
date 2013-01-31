@@ -4,11 +4,14 @@ import android.media.AudioManager;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.Window;
 import android.view.WindowManager;
 
 public class MainActivity extends Activity {
+	
+	private MainView mainView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -23,8 +26,8 @@ public class MainActivity extends Activity {
 		//i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 		setVolumeControlStream(AudioManager.STREAM_MUSIC); 
 		//Viewをセット
-		//setContentView(R.layout.activity_main);
-		setContentView(new MainView(this));
+		mainView = new MainView(this);
+		setContentView(mainView);
 	}
 
 	@Override
@@ -33,5 +36,23 @@ public class MainActivity extends Activity {
 		getMenuInflater().inflate(R.menu.activity_main, menu);
 		return true;
 	}
+
+	@Override
+		protected void onResume() {
+		this.mainView.gameCount.read();
+		Log.d("", "read");
+		super.onResume();
+	}
+	
+	@Override
+	protected void onPause() {
+		//ゲームカウントを書き込む．
+		this.mainView.gameCount.save();
+		Log.d("", "save");
+
+		super.onPause();
+	}
+
+	
 
 }

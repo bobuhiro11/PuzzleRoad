@@ -69,7 +69,8 @@ SurfaceHolder.Callback, Runnable {
 		super(context);
 		
 		this.context = context;
-		this.gameCount  = new GameCount();
+		this.gameCount  = new GameCount(context);
+		//this.gameCount.read();
 		
 		fPSManager = new FPSManager(20);
 		

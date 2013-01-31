@@ -1,5 +1,8 @@
 package net.bobuhiro11.puzzleroad;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -11,8 +14,10 @@ import android.graphics.Paint;
 public class GameCount {
 	private int count;
 	private Paint paint;
+	private Context context;
 	
-	public GameCount(){
+	public GameCount(Context context){
+		this.context = context;
 		count = 1;
 		paint = new Paint();
 		paint.setColor(Color.BLACK);
@@ -30,6 +35,26 @@ public class GameCount {
 	 */
 	public void up(){
 		this.count++;
+	}
+	
+	/**
+	 * ゲーム数を保存する．
+	 */
+	public void save(){
+        SharedPreferences pref = 
+                context.getSharedPreferences( "gc", Context.MODE_PRIVATE );
+        Editor editor = pref.edit();
+        editor.putInt("gc", count);
+        editor.commit();
+	}
+	
+	/**
+	 * ゲーム数を読み込む．
+	 */
+	public void read(){
+        SharedPreferences pref = 
+                context.getSharedPreferences( "gc", Context.MODE_PRIVATE );
+        count = pref.getInt("gc", 1);
 	}
 	
 	/**
