@@ -54,7 +54,11 @@ SurfaceHolder.Callback, Runnable {
 	private Dialog dialog;
 	
 	//ゲームのサイズを決定
-	private int n = 4;
+	private final int n = 4;
+	
+	//ゲームカウント
+	public GameCount gameCount;
+	
 	
 	/**
 	 * 現在のゲームの状態
@@ -65,6 +69,7 @@ SurfaceHolder.Callback, Runnable {
 		super(context);
 		
 		this.context = context;
+		this.gameCount  = new GameCount();
 		
 		fPSManager = new FPSManager(20);
 		
@@ -183,6 +188,7 @@ SurfaceHolder.Callback, Runnable {
 		if(status==Status.dialog){
 			dialog.draw(canvas);
 		}
+		gameCount.draw(canvas);
 		fPSManager.draw(canvas);
 	}
 

@@ -38,6 +38,8 @@ public class Dialog {
 		if(event.getAction() == MotionEvent.ACTION_DOWN){
 			this.mainView.status = Status.playing;
 			
+			//ゲーム数カウントアップ
+			mainView.gameCount.up();
 			//パズルを初期化
 			mainView.playPuzzle.puzzle.init(n+2,1);
 			//スタート，ゴールオブジェクト更新
