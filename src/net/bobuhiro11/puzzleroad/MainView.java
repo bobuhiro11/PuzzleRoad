@@ -75,7 +75,7 @@ SurfaceHolder.Callback, Runnable {
 		this.gameCount  = new GameCount(context);
 		//this.gameCount.read();
 		
-		fPSManager = new FPSManager(20);
+		fPSManager = new FPSManager(30);
 		
 		//画面サイズ取得
 		WindowManager wm = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
