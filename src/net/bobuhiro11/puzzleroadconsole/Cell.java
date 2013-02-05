@@ -23,6 +23,9 @@ public class Cell {
 		this.right = r;
 	}
 	
+	/**
+	 * すべてfalse
+	 */
 	public Cell(){
 		this.up = false;
 		this.down = false;
@@ -30,6 +33,9 @@ public class Cell {
 		this.right = false;
 	}
 	
+	/**
+	 * セルにランダムで方向を与える．（ただし全てfalseもありえる．）
+	 */
 	public void setRandom(){
 		Random rand = new Random();
 		int x = rand.nextInt(7);

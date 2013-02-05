@@ -226,7 +226,7 @@ public class Puzzle {
 				r=rand.nextInt(max.x-2)+1;
 				this.move(cells,r,d);
 			}else{
-				d=Direction.up;
+				d=Direction.left;
 				r=rand.nextInt(max.y-2)+1;
 				this.move(cells,r,d);
 			}
@@ -238,7 +238,7 @@ public class Puzzle {
 				r=rand.nextInt(max.x-2)+1;
 				this.move(cells,r,d);
 			}else{
-				d=Direction.up;
+				d=Direction.left;
 				r=rand.nextInt(max.y-2)+1;
 				this.move(cells,r,d);
 			}
