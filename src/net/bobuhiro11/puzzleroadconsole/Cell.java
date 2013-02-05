@@ -84,4 +84,12 @@ public class Cell {
 	public boolean isAllFalse(){
 		return (!up&&!down&&!right&&!left);
 	}
+	
+	/**
+	 * それが直線かどうか
+	 * @return
+	 */
+	public boolean isStraight(){
+		return (up&&down || left&&right);
+	}
 }

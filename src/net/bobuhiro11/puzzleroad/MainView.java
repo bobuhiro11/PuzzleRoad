@@ -199,6 +199,7 @@ SurfaceHolder.Callback, Runnable {
 		if(status==Status.dialog){
 			dialog.draw(canvas);
 		}
+		playPuzzle.draw_difficulty(canvas);
 		gameCount.draw(canvas);
 		fPSManager.draw(canvas);
 	}

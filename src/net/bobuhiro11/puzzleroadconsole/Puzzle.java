@@ -25,6 +25,8 @@ public class Puzzle {
 	// 汎用変数
 	private Point p;
 	
+	// 難易度
+	public String difficulty;
 	
 	/**
 	 * パズルの盤面を作成する．完成することは保証されるが，完成はしていない．
@@ -62,6 +64,8 @@ public class Puzzle {
 			break;
 		}
 		
+		//難易度をセットする．
+		this.setDifficulty();
 		//Log.d("start", start.toString());
 		//Log.d("goal", goal.toString());
 	}
@@ -392,6 +396,42 @@ public class Puzzle {
 		}
 	}
 	
+	/**
+	 * 難易度を計算する．
+	 */
+	private void setDifficulty(){
+		//全部の要素数
+		int n = this.max.x * this.max.y;
+		//空白の数
+		int noun =0;
+		//まっすぐ
+		int straight = 0;
+		//まがった
+		int curb = 0;
+	
+		for(int y=1;y<=max.y-2;y++){
+			for(int x=1;x<=max.x-2;x++){
+				if(cells[x][y].isAllFalse()){
+					noun++;
+				}else if(cells[x][y].isStraight()){
+					straight ++;
+				}else{
+					curb ++;
+				}
+			}
+		}
+		//難易度
+		double d = (noun * 2 +curb) / (double)(max.x-2) / (double)(max.y-2);
+		
+		if(d  > 0.9375){
+			this.difficulty = "ちょいむず";
+		}else if(d < 0.6875){
+			this.difficulty = "よゆう";
+		}else{
+			this.difficulty = "ふつう";
+		}
+		//this.difficulty += String.valueOf(d);
+	}
 	
 	/**
 	 * @param cells セルの集合

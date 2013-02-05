@@ -21,7 +21,7 @@ import android.widget.Toast;
 
 public class  PlayPuzzle{
 
-	private Paint paint;
+	private Paint paint,paint_difficulty;
 	private Context context;
 	
 	//スライドの感度,低いほうがよい．
@@ -69,6 +69,9 @@ public class  PlayPuzzle{
 		
 		paint = new Paint();
 		paint.setColor(Color.WHITE);
+		paint_difficulty = new Paint();
+		paint_difficulty.setColor(Color.BLACK);
+		paint_difficulty.setTextSize(50);
 		
 		puzzle = new Puzzle(n+2,1);
 		this.rect = rect;
@@ -221,6 +224,14 @@ public class  PlayPuzzle{
 		//あとで消しとく．
 		canvas.drawRect(0, rect.bottom, canvas.getWidth(), canvas.getHeight(), paint);
 		canvas.drawRect(rect.right, 0, canvas.getWidth(), canvas.getHeight(), paint);
+	}
+	
+	/**
+	 * 難易度を描画する．
+	 * @param canvas
+	 */
+	public void draw_difficulty(Canvas canvas){
+		canvas.drawText("難易度 : "+puzzle.difficulty,0, 150, paint_difficulty);
 	}
 	
 	/**
