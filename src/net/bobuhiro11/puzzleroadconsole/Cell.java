@@ -38,7 +38,7 @@ public class Cell {
 	 */
 	public void setRandom(){
 		Random rand = new Random();
-		int x = rand.nextInt(7);
+		int x = rand.nextInt(9);
 		switch(x){
 		case 0:	up=true;right=true;break;
 		case 1:	up=true;down=true;break;
@@ -46,7 +46,7 @@ public class Cell {
 		case 3:	right=true;down=true;break;
 		case 4:	right=true;left=true;break;
 		case 5:	down=true;left=true;break;
-		case 6: right=false;left=false;up=false;down=false;break;
+		default: right=false;left=false;up=false;down=false;break;
 		}
 	}
 	

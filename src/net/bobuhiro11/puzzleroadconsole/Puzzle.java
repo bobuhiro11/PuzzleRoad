@@ -401,7 +401,7 @@ public class Puzzle {
 	 */
 	private void setDifficulty(){
 		//全部の要素数
-		int n = this.max.x * this.max.y;
+		int n = (this.max.x-2) * (this.max.y-2);
 		//空白の数
 		int noun =0;
 		//まっすぐ
@@ -421,16 +421,15 @@ public class Puzzle {
 			}
 		}
 		//難易度
-		double d = (noun * 2 +curb) / (double)(max.x-2) / (double)(max.y-2);
-		
-		if(d  > 0.9375){
-			this.difficulty = "ちょいむず";
-		}else if(d < 0.6875){
+		double d = (noun * 3 +curb) / (double)n;
+		if(d >= 1.0){
+			this.difficulty = "むずい";
+		}else if(d <= 0.8){
 			this.difficulty = "よゆう";
 		}else{
 			this.difficulty = "ふつう";
 		}
-		//this.difficulty += String.valueOf(d);
+		this.difficulty += '('+String.valueOf(d)+')';
 	}
 	
 	/**
