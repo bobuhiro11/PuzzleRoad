@@ -35,16 +35,18 @@ public class Cell {
 	
 	/**
 	 * セルにランダムで方向を与える．（ただし全てfalseもありえる．）
+	 * @param gameNunber 何ゲーム目か
 	 */
-	public void setRandom(){
+	public void setRandom(int gameNunber){
 		Random rand = new Random();
-		int x = rand.nextInt(9);
+		int n = 4 + gameNunber/2;
+		int x = rand.nextInt(n);
 		switch(x){
-		case 0:	up=true;right=true;break;
+		case 0:	right=true;left=true;break;
 		case 1:	up=true;down=true;break;
-		case 2:	up=true;left=true;break;
-		case 3:	right=true;down=true;break;
-		case 4:	right=true;left=true;break;
+		case 2:	up=true;right=true;break;
+		case 3:	up=true;left=true;break;
+		case 4:	right=true;down=true;break;
 		case 5:	down=true;left=true;break;
 		default: right=false;left=false;up=false;down=false;break;
 		}

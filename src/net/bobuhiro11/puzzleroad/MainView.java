@@ -92,7 +92,8 @@ SurfaceHolder.Callback, Runnable {
 		playPuzzle = new PlayPuzzle(
 				context,this,
 				new Rect(w/14,h/3,w*13/14,h*5/6),
-				n);
+				n,
+				gameCount.get());
 		
         //スタートとゴールのオブジェクト生成
         startObject = new Person(context,playPuzzle.puzzle.start,

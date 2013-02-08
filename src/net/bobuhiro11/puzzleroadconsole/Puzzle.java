@@ -32,16 +32,17 @@ public class Puzzle {
 	 * パズルの盤面を作成する．完成することは保証されるが，完成はしていない．
 	 * @param max  盤面の大きさ（一回り大きく）
 	 * @param mode どのモードで盤面を作るのか．
+	 * @param gameNunber 今何ゲーム目か
 	 * 1:スタートと，ゴールの位置を上下から自動で決定する．
 	 */
-	public Puzzle(int max,int mode){
+	public Puzzle(int max,int mode,int gameNunber){
 		this.max = new Point();
 		this.route = new int[max][max];
 		this.p = new Point();
 		this.start = new Point();
 		this.goal = new Point();
 		
-		this.init(max, mode);
+		this.init(max, mode,gameNunber);
 	}
 	
 	/**
@@ -50,8 +51,9 @@ public class Puzzle {
 	 * @param max  盤面の大きさ（一回り大きく）
 	 * @param mode どのモードで盤面を作るのか．
 	 * 1:スタートと，ゴールの位置を上下から自動で決定する．
+	 * @param gameNunber 今何ゲーム目か
 	 */
-	public void init(int max,int mode){
+	public void init(int max,int mode,int gameNunber){
 		this.max.set(max, max);
 		
 		switch(mode){
@@ -60,7 +62,7 @@ public class Puzzle {
 			Random rand = new Random();
 			start.set(rand.nextInt(n)+1,0);
 			goal.set(rand.nextInt(n)+1,n+1);
-			cells = this.makeRandomCells();
+			cells = this.makeRandomCells(gameNunber);
 			break;
 		}
 		
@@ -215,9 +217,10 @@ public class Puzzle {
 	
 	/**
 	 * @return 正しい道順を含むセルの集まり，さらにそれをランダムに混ぜたもの
+	 * @param gameNunber 今何ゲーム目か
 	 */
-	private Cell[][] makeRandomCells(){
-		Cell[][] cells = makeCells();
+	private Cell[][] makeRandomCells(int gameNunber){
+		Cell[][] cells = makeCells(gameNunber);
 		Random rand = new Random();
 		int r;
 		Direction d;
@@ -255,15 +258,16 @@ public class Puzzle {
 
 	/**
 	 * @return 完成されたセルの集まり,何かの方向が入っている．
+	 * @param gameNunber 今何ゲーム目か
 	 */
-	private Cell[][] makeCells(){
+	private Cell[][] makeCells(int gameNunber){
 		Cell[][] cells = makeIncompleteCells();
 		for(int x=0;x<=max.x-1;x++)
 			for(int y=0;y<=max.y-1;y++)
 				if(cells[x][y]==null){
 					Cell cell= new Cell();
 					if(x!=0 && x!=max.x-1 && y!=0 && y!=max.y-1)
-						cell.setRandom();
+						cell.setRandom(gameNunber);
 					cells[x][y] = cell;
 				}
 		//debugCells(cells);

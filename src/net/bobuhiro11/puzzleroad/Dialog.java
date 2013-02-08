@@ -41,7 +41,7 @@ public class Dialog {
 			//ゲーム数カウントアップ
 			mainView.gameCount.up();
 			//パズルを初期化
-			mainView.playPuzzle.puzzle.init(n+2,1);
+			mainView.playPuzzle.puzzle.init(n+2,1,mainView.gameCount.get());
 			//スタート，ゴールオブジェクト更新
 			mainView.startObject.setPoint(mainView.playPuzzle.puzzle.start);
 			mainView.goalObject.setPoint(mainView.playPuzzle.puzzle.goal);

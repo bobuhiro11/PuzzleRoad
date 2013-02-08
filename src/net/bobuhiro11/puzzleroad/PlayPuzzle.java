@@ -62,8 +62,9 @@ public class  PlayPuzzle{
 	 * @param context コンテキスト
 	 * @param rect 描画サイズ
 	 * @param n　nマス×nマス
+	 * @praam gameNunber 今何ゲーム目か
 	 */
-	public PlayPuzzle(Context context,MainView mainView,Rect rect,int n){
+	public PlayPuzzle(Context context,MainView mainView,Rect rect,int n,int gameNunber){
 		this.context = context;
 		this.mainView = mainView;
 		
@@ -73,7 +74,7 @@ public class  PlayPuzzle{
 		paint_difficulty.setColor(Color.BLACK);
 		paint_difficulty.setTextSize(50);
 		
-		puzzle = new Puzzle(n+2,1);
+		puzzle = new Puzzle(n+2,1,gameNunber);
 		this.rect = rect;
 		this.n = n;
 		
