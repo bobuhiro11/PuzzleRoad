@@ -38,6 +38,11 @@ public class Cell {
 	 * @param gameNunber 何ゲーム目か
 	 */
 	public void setRandom(int gameNunber){
+		
+		// 20ゲーム目以降は難易度の変更はなし
+		if(gameNunber >= 20)
+			gameNunber = 20;
+		
 		Random rand = new Random();
 		int n = 4 + gameNunber/2;
 		int x = rand.nextInt(n);
