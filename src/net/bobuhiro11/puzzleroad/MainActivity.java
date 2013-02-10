@@ -6,12 +6,15 @@ import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
 	
 	private MainView mainView;
+	private final int MENU_SELECT_RESET=1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +36,8 @@ public class MainActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.activity_main, menu);
+		// getMenuInflater().inflate(R.menu.activity_main, menu);
+		menu.add(0, MENU_SELECT_RESET, 0, "リセット");
 		return true;
 	}
 
@@ -61,6 +65,15 @@ public class MainActivity extends Activity {
 		System.exit(0);
 	}
 
-	
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    switch (item.getItemId()) {
+	    case MENU_SELECT_RESET:
+	    	this.mainView.gameCount.reset();
+	    	Toast.makeText(this, "リセットされました．",Toast.LENGTH_SHORT).show();
+	        return true;
+	 
+	    }
+	    return false;
+	}	
 
 }

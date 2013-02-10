@@ -25,6 +25,14 @@ public class GameCount {
 	}
 	
 	/**
+	 * ゲーム数をリセットする．
+	 * @return
+	 */
+	public void reset(){
+		this.count = 1;
+	}
+	
+	/**
 	 * @return 現在のゲーム数取得
 	 */
 	public int get(){
