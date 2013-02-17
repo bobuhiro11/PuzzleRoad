@@ -40,15 +40,17 @@ public class Dialog {
 	 */
 	public void touch(MotionEvent event,int n){
 		if(event.getAction() == MotionEvent.ACTION_DOWN){
-			this.mainView.status = Status.playing;
-			
-			//ゲーム数カウントアップ
-			mainView.gameCount.up();
+			//ゲーム数更新
+			if(mainView.status==Status.dialog)
+				mainView.gameCount.up();
+			else
+				mainView.gameCount.reset();
 			//パズルを初期化
 			mainView.playPuzzle.puzzle.init(n+2,1,mainView.gameCount.get());
 			//スタート，ゴールオブジェクト更新
 			mainView.startObject.setPoint(mainView.playPuzzle.puzzle.start);
 			mainView.goalObject.setPoint(mainView.playPuzzle.puzzle.goal);
+			this.mainView.status = Status.playing;
 		}
 	}
 }
