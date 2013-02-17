@@ -83,7 +83,7 @@ public class  PlayPuzzle{
 		
 		Resources r = context.getResources();
 		
-		a = new Bitmap[7];
+		a = new Bitmap[8];
         a[0] = BitmapFactory.decodeResource(r, R.drawable.a0);
         a[1] = BitmapFactory.decodeResource(r, R.drawable.a1);
         a[2] = BitmapFactory.decodeResource(r, R.drawable.a2);
@@ -91,7 +91,8 @@ public class  PlayPuzzle{
         a[4] = BitmapFactory.decodeResource(r, R.drawable.a4);
         a[5] = BitmapFactory.decodeResource(r, R.drawable.a5);
         a[6] = BitmapFactory.decodeResource(r, R.drawable.a6);
-		b = new Bitmap[7];
+        a[7] = BitmapFactory.decodeResource(r, R.drawable.a7);
+		b = new Bitmap[8];
         b[0] = BitmapFactory.decodeResource(r, R.drawable.b0);
         b[1] = BitmapFactory.decodeResource(r, R.drawable.b1);
         b[2] = BitmapFactory.decodeResource(r, R.drawable.b2);
@@ -99,6 +100,7 @@ public class  PlayPuzzle{
         b[4] = BitmapFactory.decodeResource(r, R.drawable.b4);
         b[5] = BitmapFactory.decodeResource(r, R.drawable.b5);
         b[6] = BitmapFactory.decodeResource(r, R.drawable.b6);
+        b[7] = BitmapFactory.decodeResource(r, R.drawable.b7);
         
         this.ani_moving_per_frame = rect.width() / 15;
 	}
@@ -325,7 +327,7 @@ public class  PlayPuzzle{
 				break;
 			}
 		//}
-
+			Log.d("HOLE", String.valueOf(this.puzzle.isRouteHole()));
 	}
 
 	//更新処理

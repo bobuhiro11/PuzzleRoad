@@ -131,6 +131,21 @@ public class Puzzle {
 		return a[start.x][start.y]!=0 && a[goal.x][goal.y]!=0;
 	}
 	
+	/**
+	 * 落とし穴とつながっているかどうか.
+	 * @return
+	 */
+	public boolean isRouteHole(){
+		//落とし穴の位置
+		Point hole = null;
+		for(int x=0;x<max.x;x++)
+			for(int y=0;y<max.y;y++)
+				if(cells[x][y].isHole())
+					hole  = new Point(x,y);
+		
+		int[][] a = checkRoute(cells,start,hole);
+		return a[start.x][start.y]!=0 && a[hole.x][hole.y]!=0;
+	}
 		
 	/**
 	 * スタートからつながっているルートに順番付けしたもの．
@@ -261,13 +276,21 @@ public class Puzzle {
 	 * @param gameNunber 今何ゲーム目か
 	 */
 	private Cell[][] makeCells(int gameNunber){
+		//落とし穴を作ったかどうか
+		boolean hole = false;
+		
 		Cell[][] cells = makeIncompleteCells();
 		for(int x=0;x<=max.x-1;x++)
 			for(int y=0;y<=max.y-1;y++)
 				if(cells[x][y]==null){
 					Cell cell= new Cell();
-					if(x!=0 && x!=max.x-1 && y!=0 && y!=max.y-1)
+					if(x!=0 && x!=max.x-1 && y!=0 && y!=max.y-1){
 						cell.setRandom(gameNunber);
+						if(!hole){
+							cell.setHole();
+							hole = true;
+						}
+					}
 					cells[x][y] = cell;
 				}
 		//debugCells(cells);

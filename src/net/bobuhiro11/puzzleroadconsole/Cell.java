@@ -34,6 +34,26 @@ public class Cell {
 	}
 	
 	/**
+	 * このセルを落とし穴にする．
+	 * 落とし穴はすべてtrueのマス
+	 */
+	public void setHole(){
+		this.up = true;
+		this.down = true;
+		this.left = true;
+		this.right = true;
+	}
+	
+	/**
+	 * このセルが落とし穴かどうか．
+	 * （このセルがすべてtrueかどうか）
+	 * @return
+	 */
+	public boolean isHole(){
+		return (up&&down&&right&&left);
+	}
+	
+	/**
 	 * セルにランダムで方向を与える．（ただし全てfalseもありえる．）
 	 * @param gameNunber 何ゲーム目か
 	 */
@@ -61,7 +81,8 @@ public class Cell {
 	 * @return int型に変換する．できないものは-1
 	 */
 	public int toInt(){
-		if(up==true&&right==true)		return 0;
+		if(down&&up&&left&&right)	return 7;
+		else if(up==true&&right==true)	return 0;
 		else if(up==true&&down==true)	return 1;
 		else if(up==true&&left==true)	return 2;
 		else if(right==true&&down==true)return 3;
