@@ -136,15 +136,38 @@ public class Puzzle {
 	 * @return
 	 */
 	public boolean isRouteHole(){
+		return isRouteHole(cells);
+	}
+	/**
+	 * 落とし穴とつながっているかどうか.
+	 * @return
+	 */
+	private boolean isRouteHole(Cell[][] cells){
+		//落とし穴の位置
+		Point hole = this.getHolePoint(cells);
+		
+		int[][] a = checkRoute(cells,start,hole);
+		return a[start.x][start.y]!=0 && a[hole.x][hole.y]!=0;
+	}
+	
+	/*
+	 * 落とし穴のいちを返す．
+	 */
+	public Point getHolePoint(){
+		return getHolePoint(cells);
+	}
+	
+	/*
+	 * 落とし穴のいちを返す．
+	 */
+	private Point getHolePoint(Cell[][] cells){
 		//落とし穴の位置
 		Point hole = null;
 		for(int x=0;x<max.x;x++)
 			for(int y=0;y<max.y;y++)
 				if(cells[x][y].isHole())
 					hole  = new Point(x,y);
-		
-		int[][] a = checkRoute(cells,start,hole);
-		return a[start.x][start.y]!=0 && a[hole.x][hole.y]!=0;
+		return hole;
 	}
 		
 	/**
@@ -254,7 +277,7 @@ public class Puzzle {
 			}
 		}
 		//いきなり成功するのは防ぐ
-		while(isComplete(cells)){
+		while(isComplete(cells) || this.isRouteHole(cells)){
 			if(rand.nextInt(2)==1){
 				d=Direction.down;
 				r=rand.nextInt(max.x-2)+1;

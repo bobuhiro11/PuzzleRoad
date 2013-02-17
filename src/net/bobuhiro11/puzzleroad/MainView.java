@@ -131,8 +131,8 @@ SurfaceHolder.Callback, Runnable {
 		if(status==Status.playing){
 			//パズル中
 			playPuzzle.update();
-		}else if(status==Status.personMovin){
-			//パズル後のアニメーション中
+		}else if(status==Status.personMovin||status==Status.personMovingHole){
+			//パズル後,落とし穴後のアニメーション中
 			startObject.update();
 		}
 	}
@@ -197,7 +197,7 @@ SurfaceHolder.Callback, Runnable {
 		canvas.drawBitmap(backGround,this.backGroundSrc,this.backGroundDst, null);
 		goalObject.draw(canvas);
 		startObject.draw(canvas);
-		if(status==Status.dialog){
+		if(status==Status.dialog || status==Status.dialogHole){
 			dialog.draw(canvas);
 		}
 		playPuzzle.draw_difficulty(canvas);
@@ -209,7 +209,7 @@ SurfaceHolder.Callback, Runnable {
 	public boolean onTouchEvent(MotionEvent event) {
 		if(status==Status.playing){
 			playPuzzle.touch(event);
-		}else if(status==Status.dialog){
+		}else if(status==Status.dialog||status==Status.dialogHole){
 			dialog.touch(event,n);
 		}else if(status==Status.title){
 			this.status = Status.playing;

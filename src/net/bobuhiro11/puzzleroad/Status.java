@@ -20,4 +20,12 @@ public enum Status {
 	 * ゴール後のダイアログ
 	 */
 	dialog,
+	/**
+	 * 落とし穴後の画像の移動状態
+	 */
+	personMovingHole,
+	/**
+	 * 落とし穴後のダイアログ
+	 */
+	dialogHole
 }

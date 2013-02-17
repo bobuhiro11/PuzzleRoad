@@ -113,7 +113,7 @@ public class Person {
 	 */
 	public void update(){
 		
-		if(mainView.status==Status.personMovin){
+		//if(mainView.status==Status.personMovin || mainView.status == Status.personMovingHole){
 			//Log.d("size", positions.toString());
 			//Log.d("nextindex", String.valueOf(nextIndex));
 			
@@ -147,9 +147,12 @@ public class Person {
 			
 			//終了
 			if(nextIndex == positions.size()){
-				mainView.status = Status.dialog;
+				if(mainView.status==Status.personMovin)
+					mainView.status = Status.dialog;
+				else
+					mainView.status = Status.dialogHole;
 			}
-		}
+		//}
 	}
 	
 	/**

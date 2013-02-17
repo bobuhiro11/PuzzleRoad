@@ -137,6 +137,37 @@ public class  PlayPuzzle{
 		}
 	}
 	
+	/**
+	 * 落とし穴時に使う．
+	 * スタートから落とし穴までの各マスの左上の座標をリストにしたもの．
+	 * @return	座標のリスト(スタート，落とし穴を含む)
+	 */
+	public ArrayList<Point> routePositionHole(){
+		ArrayList<Point> list = new ArrayList<Point>();
+		Point hole = puzzle.getHolePoint();
+		int[][] route = puzzle.checkRoute(puzzle.cells, puzzle.start,hole);
+		int index = 1;
+		while(true){
+			for(int x=0;x<n+2;x++){
+				for(int y=0;y<n+2;y++){
+					if(route[x][y] ==index){
+						// m番目の座標発見
+						int cellWidth = rect.width() / n;
+						int cellHeight = rect.height() /n;
+						Point p = new Point(
+								rect.left + cellWidth*(x-1),
+								rect.top  +cellHeight*(y-1));
+						list.add(p);
+						index++;
+						if(x==hole.x && y==hole.y){
+							//落とし穴へ到達
+							return list;
+						}
+					}
+				}
+			}
+		}
+	}
 	public void draw(Canvas canvas){
 		canvas.drawRect(rect, paint);
 		
@@ -327,12 +358,11 @@ public class  PlayPuzzle{
 				break;
 			}
 		//}
-			Log.d("HOLE", String.valueOf(this.puzzle.isRouteHole()));
 	}
 
 	//更新処理
 	public void update() {
-		this.startObject.update();
+		//this.startObject.update();
 		
 		if(ani_moving != -1){
 			ani_moving += ani_moving_per_frame;
@@ -346,6 +376,12 @@ public class  PlayPuzzle{
 					//辿るべき道順を指定．
 					startObject.setPositions(this.routePosition());
 					this.mainView.status=Status.personMovin;
+				}
+				//落とし穴完成
+				if(puzzle.isRouteHole()){
+					//辿るべき道順を指定．
+					startObject.setPositions(this.routePositionHole());
+					this.mainView.status=Status.personMovingHole;
 				}
 			}
 		}
