@@ -14,7 +14,7 @@ import android.view.MotionEvent;
  */
 public class Dialog {
 	Rect src,dst;
-	Bitmap bmp;
+	Bitmap bmpComplete,bmpHole;
 	MainView mainView;
 	
 	public Dialog(Context context,MainView mainView,int w,int h){
@@ -23,11 +23,15 @@ public class Dialog {
 		this.dst = new Rect(0,0,w,h);
 		
 		Resources r = context.getResources();
-        bmp = BitmapFactory.decodeResource(r, R.drawable.complete_back);
+        bmpComplete = BitmapFactory.decodeResource(r, R.drawable.complete_back);
+        bmpHole = BitmapFactory.decodeResource(r, R.drawable.hole_back);
 	}
 	
 	public void draw(Canvas canvas){
-		canvas.drawBitmap(bmp, src, dst, null);
+		if(mainView.status==Status.dialog)
+			canvas.drawBitmap(bmpComplete, src, dst, null);
+		else
+			canvas.drawBitmap(bmpHole, src, dst, null);
 	}
 
 	/**
