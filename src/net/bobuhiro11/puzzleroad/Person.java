@@ -43,6 +43,7 @@ public class Person {
 	//汎用変数
 	Point now,next,d;
 	
+	
 	/**
 	 * 動きのある物体を生成する．
 	 * @param context コンテキスト
