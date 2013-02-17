@@ -301,9 +301,10 @@ public class Puzzle {
 	 * @param gameNunber 今何ゲーム目か
 	 */
 	private Cell[][] makeCells(int gameNunber){
+		Random rand = new Random();
 		//落とし穴を作ったかどうか
 		boolean hole = false;
-		if(gameNunber<=3){
+		if(gameNunber<=2 || rand.nextInt()%2==0){
 			hole =true;
 		}
 		
@@ -463,11 +464,15 @@ public class Puzzle {
 		int straight_v = 0,straight_h = 0;
 		//まがった
 		int curb = 0;
+		//あな
+		int hole = 0;
 	
 		for(int y=1;y<=max.y-2;y++){
 			for(int x=1;x<=max.x-2;x++){
 				if(cells[x][y].isAllFalse()){
 					noun++;
+				}else if(cells[x][y].isHole()){
+					hole++;
 				}else if(cells[x][y].left && cells[x][y].right){
 					straight_v ++;
 				}else if(cells[x][y].up && cells[x][y].down){
@@ -478,7 +483,7 @@ public class Puzzle {
 			}
 		}
 		//難易度
-		double d = (curb - straight_h*3) / (double)n;
+		double d = (hole*6 + curb - straight_h*3) / (double)n;
 		if(d >= 0.3){
 			this.difficulty = "むずい";
 		}else if(d <= 0.0){
