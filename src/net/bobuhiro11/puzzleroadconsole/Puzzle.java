@@ -145,6 +145,8 @@ public class Puzzle {
 	private boolean isRouteHole(Cell[][] cells){
 		//落とし穴の位置
 		Point hole = this.getHolePoint(cells);
+		if(hole==null)
+			return false;
 		
 		int[][] a = checkRoute(cells,start,hole);
 		return a[start.x][start.y]!=0 && a[hole.x][hole.y]!=0;
@@ -301,6 +303,9 @@ public class Puzzle {
 	private Cell[][] makeCells(int gameNunber){
 		//落とし穴を作ったかどうか
 		boolean hole = false;
+		if(gameNunber<=3){
+			hole =true;
+		}
 		
 		Cell[][] cells = makeIncompleteCells();
 		for(int x=0;x<=max.x-1;x++)
@@ -455,7 +460,7 @@ public class Puzzle {
 		//空白の数
 		int noun =0;
 		//まっすぐ
-		int straight = 0;
+		int straight_v = 0,straight_h = 0;
 		//まがった
 		int curb = 0;
 	
@@ -463,18 +468,20 @@ public class Puzzle {
 			for(int x=1;x<=max.x-2;x++){
 				if(cells[x][y].isAllFalse()){
 					noun++;
-				}else if(cells[x][y].isStraight()){
-					straight ++;
+				}else if(cells[x][y].left && cells[x][y].right){
+					straight_v ++;
+				}else if(cells[x][y].up && cells[x][y].down){
+					straight_h ++;
 				}else{
 					curb ++;
 				}
 			}
 		}
 		//難易度
-		double d = (noun * 3 +curb) / (double)n;
-		if(d >= 1.0){
+		double d = (curb - straight_h*3) / (double)n;
+		if(d >= 0.3){
 			this.difficulty = "むずい";
-		}else if(d <= 0.8){
+		}else if(d <= 0.0){
 			this.difficulty = "よゆう";
 		}else{
 			this.difficulty = "ふつう";

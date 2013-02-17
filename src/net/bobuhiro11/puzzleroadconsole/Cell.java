@@ -59,17 +59,17 @@ public class Cell {
 	 */
 	public void setRandom(int gameNunber){
 		
-		// 20ゲーム目以降は難易度の変更はなし
-		if(gameNunber >= 20)
-			gameNunber = 20;
+		// 8ゲーム目以降は難易度の変更はなし
+		if(gameNunber >= 8)
+			gameNunber = 8;
 		
 		Random rand = new Random();
 		int n = 4 + gameNunber/2;
 		int x = rand.nextInt(n);
 		switch(x){
-		case 0:	right=true;left=true;break;
-		case 1:	up=true;down=true;break;
-		case 2:	up=true;right=true;break;
+		case 0:	up=true;down=true;break;
+		case 1:	up=true;right=true;break;
+		case 2:	right=true;left=true;break;
 		case 3:	up=true;left=true;break;
 		case 4:	right=true;down=true;break;
 		case 5:	down=true;left=true;break;
