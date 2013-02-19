@@ -202,7 +202,7 @@ SurfaceHolder.Callback, Runnable {
 		}
 		playPuzzle.draw_difficulty(canvas);
 		gameCount.draw(canvas);
-		fPSManager.draw(canvas);
+		//fPSManager.draw(canvas);
 	}
 
 	// タッチイベント
