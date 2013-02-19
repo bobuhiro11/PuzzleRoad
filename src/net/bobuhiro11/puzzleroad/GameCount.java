@@ -15,9 +15,11 @@ public class GameCount {
 	private int count;
 	private Paint paint;
 	private Context context;
+	private HighScore highScore;
 	
 	public GameCount(Context context){
 		this.context = context;
+		this.highScore = new HighScore(context);
 		count = 1;
 		paint = new Paint();
 		paint.setColor(Color.BLACK);
@@ -43,6 +45,9 @@ public class GameCount {
 	 */
 	public void up(){
 		this.count++;
+		//ハイスコア更新
+		if(this.count > this.highScore.get())
+			this.highScore.set(count);
 	}
 	
 	/**
@@ -54,6 +59,10 @@ public class GameCount {
         Editor editor = pref.edit();
         editor.putInt("gc", count);
         editor.commit();
+        
+        
+        //ハイスコアも保存
+        this.highScore.save();
 	}
 	
 	/**
@@ -63,6 +72,9 @@ public class GameCount {
         SharedPreferences pref = 
                 context.getSharedPreferences( "gc", Context.MODE_PRIVATE );
         count = pref.getInt("gc", 1);
+        
+        //ハイスコアも読み込む．
+        this.highScore.read();
 	}
 	
 	/**
@@ -70,7 +82,9 @@ public class GameCount {
 	 * @param canvas
 	 */
 	public void draw(Canvas canvas){
-		canvas.drawText(String.valueOf(count)+"ゲーム目",0, 100, paint);
+		canvas.drawText(
+				String.valueOf(count)+"ゲーム目(ハイスコア : "+highScore.get()+")"
+				,0, 100, paint);
 	}
 
 }
