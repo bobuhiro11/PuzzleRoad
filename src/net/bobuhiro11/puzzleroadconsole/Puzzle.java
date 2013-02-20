@@ -193,6 +193,10 @@ public class Puzzle {
 			if(p.equals(g)){
 				break;
 			}
+			//落とし穴
+			else if(cells[p.x][p.y].isHole()){
+				break;
+			}
 			else if(p.x==0){
 				//右へ移動する
 				if(cells[p.x+1][p.y].left){
