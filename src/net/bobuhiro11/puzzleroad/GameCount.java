@@ -23,7 +23,8 @@ public class GameCount {
 		count = 1;
 		paint = new Paint();
 		paint.setColor(Color.BLACK);
-		paint.setTextSize(50);
+		int scaledSize = context.getResources().getDimensionPixelSize(R.dimen.myFontSize);
+		paint.setTextSize(scaledSize);
 	}
 	
 	/**

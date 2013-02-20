@@ -72,7 +72,8 @@ public class  PlayPuzzle{
 		paint.setColor(Color.WHITE);
 		paint_difficulty = new Paint();
 		paint_difficulty.setColor(Color.BLACK);
-		paint_difficulty.setTextSize(50);
+		int scaledSize = context.getResources().getDimensionPixelSize(R.dimen.myFontSize);
+		paint_difficulty.setTextSize(scaledSize);
 		
 		puzzle = new Puzzle(n+2,1,gameNunber);
 		this.rect = rect;
@@ -265,7 +266,7 @@ public class  PlayPuzzle{
 	 * @param canvas
 	 */
 	public void draw_difficulty(Canvas canvas){
-		canvas.drawText("難易度 : "+puzzle.difficulty,0, 150, paint_difficulty);
+		canvas.drawText("難易度 : "+puzzle.difficulty,0, 170, paint_difficulty);
 	}
 	
 	/**
